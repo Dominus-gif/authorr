@@ -1,0 +1,1080 @@
+@import "tailwindcss";
+
+/* ───────────────────────── Theme tokens ───────────────────────── */
+/* Eclipse — the signature dark theme (default) */
+:root,
+[data-theme="eclipse"] {
+  --bg: #131316;
+  --bg-elev: #16161a;
+  --bg-elev-2: #1d1d22;
+  --bg-elev-3: #26262d;
+  --border: #2a2a30;
+  --border-strong: #38383f;
+  --text: #ececf0;
+  --text-secondary: #9b9ba8;
+  --text-tertiary: #6a6a76;
+  --accent: #7f77dd;
+  --accent-hover: #9089e6;
+  --accent-soft: #26242f;
+  --accent-contrast: #16161a;
+  --danger: #e24b4a;
+  --success: #5dcaa5;
+  --warning: #ef9f27;
+  --selection: rgba(127, 119, 221, 0.28);
+  --app-grad:
+    radial-gradient(130% 90% at 50% -20%, #1b1b24 0%, transparent 55%),
+    radial-gradient(85% 55% at 100% 0%, #1a1730 0%, transparent 52%),
+    #131316;
+}
+
+[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #f7f7f8;
+  --bg-elev-3: #eeeef1;
+  --border: #e6e6ea;
+  --border-strong: #d4d4da;
+  --text: #1a1a1f;
+  --text-secondary: #63636e;
+  --text-tertiary: #9a9aa6;
+  --accent: #5b51d8;
+  --accent-hover: #4a40c4;
+  --accent-soft: #efeefb;
+  --accent-contrast: #ffffff;
+  --danger: #d8392f;
+  --success: #0f6e56;
+  --warning: #b06a09;
+  --selection: rgba(91, 81, 216, 0.18);
+  --app-grad: linear-gradient(180deg, #ffffff 0%, #f3f5f9 100%);
+}
+
+/* macOS — clean, soft, minimal (Apple-like light theme) */
+[data-theme="macos"] {
+  --bg: #f5f5f7;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #f0f0f3;
+  --bg-elev-3: #e7e7ec;
+  --border: #e2e2e7;
+  --border-strong: #cfcfd6;
+  --text: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #a1a1a6;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --accent-soft: #e8f1fd;
+  --accent-contrast: #ffffff;
+  --danger: #ff3b30;
+  --success: #2aa745;
+  --warning: #c25e00;
+  --selection: rgba(0, 113, 227, 0.16);
+  --app-grad:
+    radial-gradient(120% 85% at 50% -15%, #ffffff 0%, transparent 55%),
+    linear-gradient(180deg, #f5f5f7 0%, #eceef2 100%);
+}
+
+/* Authorr (Paper) — the brand-refresh light theme: warm paper + orange accent */
+[data-theme="paper"] {
+  --bg: #fafafa;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #f5f3f2;
+  --bg-elev-3: #efedec;
+  --border: #eae8e7;
+  --border-strong: #dddad8;
+  --text: #1a1615;
+  --text-secondary: #666261;
+  --text-tertiary: #8a8584;
+  --accent: #ff6b00;
+  --accent-hover: #e85f00;
+  --accent-soft: #fff2e6;
+  --accent-contrast: #ffffff;
+  --danger: #c8402f;
+  --success: #1f8a5b;
+  --warning: #b8740a;
+  --selection: rgba(255, 107, 0, 0.16);
+  --app-grad:
+    radial-gradient(120% 80% at 50% -15%, #ffffff 0%, transparent 55%),
+    linear-gradient(180deg, #fafafa 0%, #f3efea 100%);
+}
+
+[data-theme="sepia"] {
+  --bg: #f4ecd8;
+  --bg-elev: #f4ecd8;
+  --bg-elev-2: #ece2c8;
+  --bg-elev-3: #e3d7b8;
+  --border: #d8c9a3;
+  --border-strong: #c7b58a;
+  --text: #3a2e1a;
+  --text-secondary: #6b5d3e;
+  --text-tertiary: #9c8a60;
+  --accent: #993c1d;
+  --accent-hover: #7c2f14;
+  --accent-soft: #e7d8b6;
+  --accent-contrast: #f4ecd8;
+  --danger: #a32d2d;
+  --success: #3b6d11;
+  --warning: #854f0b;
+  --selection: rgba(153, 60, 29, 0.18);
+  --app-grad: linear-gradient(180deg, #f6efdc 0%, #ece0c4 100%);
+}
+
+/* ════════════ Professional palette system ════════════
+   8 cognitive-ergonomic themes (4 light, 4 dark). Low-chroma complex neutrals,
+   no pure #000/#fff, borderless-friendly (hierarchy via surface-tone shifts),
+   WCAG 2.1 AA (≥4.5:1) for text + secondary text on their surfaces. */
+
+/* ── Light ── */
+/* 1. Nordic Fog — cool, muted architectural slate */
+[data-theme="nordic-fog"] {
+  --bg: #e9ecef; --bg-elev: #f7f8fa; --bg-elev-2: #eef1f4; --bg-elev-3: #e3e7ec;
+  --border: #dee2e7; --border-strong: #c8cdd4;
+  --text: #1f262e; --text-secondary: #4f5862; --text-tertiary: #828b95;
+  --accent: #4d6a8a; --accent-hover: #3f5a78; --accent-soft: #e6ebf1; --accent-contrast: #ffffff;
+  --danger: #b0413a; --success: #3f7a59; --warning: #8c5f10; --selection: rgba(77,106,138,0.16);
+  --app-grad: linear-gradient(180deg, #f3f5f7 0%, #e7eaee 100%);
+}
+/* 2. Earth Studio — warm clay / sand */
+[data-theme="earth-studio"] {
+  --bg: #efe9e1; --bg-elev: #faf6f0; --bg-elev-2: #f1ece4; --bg-elev-3: #e6dfd5;
+  --border: #e2dacd; --border-strong: #cdc2b2;
+  --text: #2c2820; --text-secondary: #5d554a; --text-tertiary: #918778;
+  --accent: #9a5d30; --accent-hover: #834d27; --accent-soft: #f3e7d8; --accent-contrast: #ffffff;
+  --danger: #ab453a; --success: #54702f; --warning: #8c6210; --selection: rgba(154,93,48,0.16);
+  --app-grad: linear-gradient(180deg, #f7f2ea 0%, #ece3d6 100%);
+}
+/* 3. Sage Minimal — biophilic desaturated green */
+[data-theme="sage-minimal"] {
+  --bg: #e8ece7; --bg-elev: #f5f8f3; --bg-elev-2: #edf1ea; --bg-elev-3: #e1e7dd;
+  --border: #dde3d8; --border-strong: #c6cfbf;
+  --text: #222a21; --text-secondary: #4d584a; --text-tertiary: #7f8a7b;
+  --accent: #45713f; --accent-hover: #395e34; --accent-soft: #e3ece2; --accent-contrast: #ffffff;
+  --danger: #aa443a; --success: #3f7a52; --warning: #836116; --selection: rgba(69,113,63,0.16);
+  --app-grad: linear-gradient(180deg, #f1f5ef 0%, #e3e9df 100%);
+}
+/* 4. Corporate Clean — tranquil professional blue-gray */
+[data-theme="corporate-clean"] {
+  --bg: #eaedf1; --bg-elev: #f7f9fb; --bg-elev-2: #eef1f5; --bg-elev-3: #e2e7ee;
+  --border: #dce1e8; --border-strong: #c5cdd7;
+  --text: #1f2733; --text-secondary: #4c5664; --text-tertiary: #828c9b;
+  --accent: #3a6ea5; --accent-hover: #305d8c; --accent-soft: #e5edf5; --accent-contrast: #ffffff;
+  --danger: #b13b34; --success: #2f7a60; --warning: #855811; --selection: rgba(58,110,165,0.16);
+  --app-grad: linear-gradient(180deg, #f4f6f9 0%, #e6eaf0 100%);
+}
+
+/* ── Dark ── */
+/* 5. Obsidian Bloom — rich premium velvet, violet bloom */
+[data-theme="obsidian-bloom"] {
+  --bg: #16141a; --bg-elev: #1c1922; --bg-elev-2: #241f2c; --bg-elev-3: #2e2838;
+  --border: #322c3c; --border-strong: #443c52;
+  --text: #ece8f0; --text-secondary: #b4adc1; --text-tertiary: #827a93;
+  --accent: #a98bd6; --accent-hover: #b89ee0; --accent-soft: rgba(169,139,214,0.16); --accent-contrast: #1a1720;
+  --danger: #e0726f; --success: #5fc398; --warning: #d6a85c; --selection: rgba(169,139,214,0.26);
+  --app-grad: radial-gradient(120% 80% at 50% -15%, #221d2c 0%, transparent 58%), radial-gradient(90% 60% at 100% 0%, #1f1a30 0%, transparent 55%), #15131a;
+}
+/* 6. Deep Marine — calming oceanic deep navy */
+[data-theme="deep-marine"] {
+  --bg: #0f1722; --bg-elev: #14202e; --bg-elev-2: #1b2a3a; --bg-elev-3: #243648;
+  --border: #28394b; --border-strong: #354c63;
+  --text: #e4ecf2; --text-secondary: #a6b8c6; --text-tertiary: #6f889c;
+  --accent: #5a9bd4; --accent-hover: #6fabdf; --accent-soft: rgba(90,155,212,0.16); --accent-contrast: #0f1722;
+  --danger: #e0726f; --success: #4ec0a0; --warning: #d6a455; --selection: rgba(90,155,212,0.24);
+  --app-grad: radial-gradient(120% 80% at 50% -15%, #16263a 0%, transparent 58%), linear-gradient(165deg, #101b27, #0d1620);
+}
+/* 7. Industrial Slate — neutral concrete, balanced */
+[data-theme="industrial-slate"] {
+  --bg: #18191b; --bg-elev: #1e1f22; --bg-elev-2: #26282b; --bg-elev-3: #303236;
+  --border: #34363a; --border-strong: #45474c;
+  --text: #e6e7e9; --text-secondary: #abacb1; --text-tertiary: #76787d;
+  --accent: #7d93ac; --accent-hover: #8fa3b9; --accent-soft: rgba(125,147,172,0.16); --accent-contrast: #18191b;
+  --danger: #d8736f; --success: #56bf95; --warning: #cfa257; --selection: rgba(125,147,172,0.2);
+  --app-grad: radial-gradient(120% 80% at 50% -15%, #1f2124 0%, transparent 58%), linear-gradient(165deg, #191a1c, #141517);
+}
+/* 8. Muted Espresso — warm low-contrast charcoal & coffee */
+[data-theme="muted-espresso"] {
+  --bg: #1a1613; --bg-elev: #201b17; --bg-elev-2: #29231d; --bg-elev-3: #342c24;
+  --border: #382f27; --border-strong: #4c4034;
+  --text: #ece4da; --text-secondary: #b6a994; --text-tertiary: #847868;
+  --accent: #c79a6a; --accent-hover: #d4aa7b; --accent-soft: rgba(199,154,106,0.16); --accent-contrast: #201b17;
+  --danger: #d9756a; --success: #86b07f; --warning: #cfa25a; --selection: rgba(199,154,106,0.22);
+  --app-grad: radial-gradient(120% 80% at 50% -15%, #241d17 0%, transparent 58%), linear-gradient(165deg, #191512, #13100d);
+}
+
+/* ───────────── Glassmorphism themes (translucent + backdrop blur) ─────────────
+   Tokens are translucent rgba; a fixed gradient sits behind the app and shows
+   through the frosted panels. Backdrop blur is applied to every surface whose
+   inline style references an elevation token (see the shared rules below). */
+/* Subtle, professional: surfaces are mostly opaque (readable, no flashy
+   see-through), tints are muted, blur is gentle and only on big chrome panels. */
+[data-theme="glass-aurora"] {
+  --bg: rgba(19, 20, 30, 0.92); --bg-elev: rgba(26, 28, 42, 0.88); --bg-elev-2: rgba(34, 36, 54, 0.9); --bg-elev-3: rgba(46, 48, 70, 0.92);
+  --border: rgba(255,255,255,0.09); --border-strong: rgba(255,255,255,0.16);
+  --text: #edecf6; --text-secondary: #b3b1cb; --text-tertiary: #7e7c9a;
+  --accent: #8b7bff; --accent-hover: #a293ff; --accent-soft: rgba(139,123,255,0.16); --accent-contrast: #0e0e1a;
+  --danger: #e9696a; --success: #51c7a0; --warning: #e6b35a; --selection: rgba(139,123,255,0.26);
+  --glass-grad: radial-gradient(85% 60% at 15% -5%, #1d1a2e 0%, transparent 62%), radial-gradient(75% 55% at 100% 5%, #15263b 0%, transparent 60%), linear-gradient(165deg, #0f0f17, #0b0c12);
+}
+[data-theme="glass-mint"] {
+  --bg: rgba(15, 24, 23, 0.92); --bg-elev: rgba(20, 33, 31, 0.88); --bg-elev-2: rgba(27, 43, 40, 0.9); --bg-elev-3: rgba(36, 56, 52, 0.92);
+  --border: rgba(255,255,255,0.09); --border-strong: rgba(255,255,255,0.16);
+  --text: #e9f4ef; --text-secondary: #aecabf; --text-tertiary: #789488;
+  --accent: #2bbf91; --accent-hover: #45d2a6; --accent-soft: rgba(43,191,145,0.16); --accent-contrast: #06140f;
+  --danger: #e9696a; --success: #45d2a6; --warning: #e6b35a; --selection: rgba(43,191,145,0.24);
+  --glass-grad: radial-gradient(85% 60% at 12% -5%, #122a24 0%, transparent 62%), radial-gradient(75% 55% at 100% 5%, #123038 0%, transparent 60%), linear-gradient(165deg, #0b1614, #08110f);
+}
+[data-theme="glass-sunset"] {
+  --bg: rgba(28, 20, 18, 0.92); --bg-elev: rgba(38, 27, 25, 0.88); --bg-elev-2: rgba(50, 35, 32, 0.9); --bg-elev-3: rgba(66, 47, 42, 0.92);
+  --border: rgba(255,255,255,0.09); --border-strong: rgba(255,255,255,0.17);
+  --text: #f6ece7; --text-secondary: #cdb6ad; --text-tertiary: #9a8077;
+  --accent: #e8784e; --accent-hover: #f08e67; --accent-soft: rgba(232,120,78,0.16); --accent-contrast: #1a0d09;
+  --danger: #e75d5d; --success: #54bd86; --warning: #e0a44e; --selection: rgba(232,120,78,0.24);
+  --glass-grad: radial-gradient(85% 60% at 10% -5%, #2e1c28 0%, transparent 62%), radial-gradient(75% 55% at 100% 0%, #38260f 0%, transparent 60%), linear-gradient(165deg, #1a1014, #130c10);
+}
+[data-theme="glass-frost"] {
+  --bg: rgba(244, 247, 251, 0.94); --bg-elev: rgba(255, 255, 255, 0.86); --bg-elev-2: rgba(248, 250, 253, 0.9); --bg-elev-3: rgba(238, 242, 248, 0.94);
+  --border: rgba(20,30,50,0.1); --border-strong: rgba(20,30,50,0.18);
+  --text: #1a2536; --text-secondary: #495469; --text-tertiary: #76819a;
+  --accent: #3b73d6; --accent-hover: #2f63c0; --accent-soft: rgba(59,115,214,0.12); --accent-contrast: #ffffff;
+  --danger: #d34141; --success: #1f9a68; --warning: #c47f1c; --selection: rgba(59,115,214,0.18);
+  --glass-grad: radial-gradient(85% 60% at 12% -5%, #e6eef9 0%, transparent 62%), radial-gradient(75% 55% at 100% 5%, #eaf1fb 0%, transparent 60%), linear-gradient(165deg, #f0f4fa, #e7edf4);
+}
+/* Shared glass behavior: muted gradient backdrop + a GENTLE blur on large chrome
+   panels only (not every elevated chip), so nothing is hidden or hard to read. */
+[data-theme^="glass-"] body {
+  background: var(--glass-grad) fixed;
+  background-attachment: fixed;
+}
+[data-theme^="glass-"] [style*="bg-elev"] {
+  -webkit-backdrop-filter: blur(6px) saturate(1.05);
+  backdrop-filter: blur(6px) saturate(1.05);
+}
+/* A whisper-thin top highlight gives panels a clean, minimal "glass edge"
+   without extra contrast. */
+[data-theme="glass-frost"] [style*="bg-elev"] { box-shadow: inset 0 1px 0 rgba(255,255,255,0.5); }
+[data-theme="glass-aurora"] [style*="bg-elev"],
+[data-theme="glass-mint"] [style*="bg-elev"],
+[data-theme="glass-sunset"] [style*="bg-elev"] { box-shadow: inset 0 1px 0 rgba(255,255,255,0.06); }
+/* Don't blur the writing surface or small interactive chips/popovers/buttons
+   (keeps text crisp and avoids nested-blur artifacts over tools). */
+[data-theme^="glass-"] .ProseMirror,
+[data-theme^="glass-"] button[style*="bg-elev"] {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+/* Reading font — driven by the font library (set via JS on <html>). */
+:root {
+  --font-reading: var(--font-sans);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-bg-elev-2: var(--bg-elev-2);
+  --color-bg-elev-3: var(--bg-elev-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --font-ui: var(--font-sans);
+  --font-reading: var(--font-reading);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  /* A subtle, professional background wash (macOS/VS Code-inspired) — the
+     writing surface uses solid --bg-elev so text contrast is unaffected. */
+  background: var(--app-grad, var(--bg));
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+::selection {
+  background: var(--selection);
+}
+
+/* Thin custom scrollbars */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 8px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+  background-clip: content-box;
+}
+
+/* ───────────────────────── Editor (ProseMirror) ───────────────────────── */
+.ProseMirror {
+  outline: none;
+  font-family: var(--font-reading);
+  color: var(--text);
+  line-height: 1.85;
+  font-size: 1.125rem;
+  caret-color: var(--accent);
+}
+
+.ProseMirror > * + * {
+  margin-top: 0.85em;
+}
+
+.ProseMirror h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-top: 1.4em;
+}
+.ProseMirror h2 {
+  font-size: 1.55rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 1.3em;
+}
+.ProseMirror h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.2em;
+}
+.ProseMirror p {
+  font-size: 1.125rem;
+}
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 1.4em;
+}
+.ProseMirror ul {
+  list-style: disc;
+}
+.ProseMirror ol {
+  list-style: decimal;
+}
+.ProseMirror li {
+  margin: 0.2em 0;
+}
+.ProseMirror li > p {
+  margin: 0;
+}
+.ProseMirror blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1em;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+.ProseMirror pre {
+  background: var(--bg-elev-3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.9em 1.1em;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  overflow-x: auto;
+}
+.ProseMirror code {
+  background: var(--bg-elev-3);
+  border-radius: 4px;
+  padding: 0.12em 0.36em;
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+}
+.ProseMirror pre code {
+  background: none;
+  padding: 0;
+}
+/* Syntax highlighting tokens (lowlight / highlight.js classes), tuned warm-dark. */
+.ProseMirror pre .hljs-comment,
+.ProseMirror pre .hljs-quote { color: #7e8590; font-style: italic; }
+.ProseMirror pre .hljs-keyword,
+.ProseMirror pre .hljs-selector-tag,
+.ProseMirror pre .hljs-literal,
+.ProseMirror pre .hljs-type { color: #c792ea; }
+.ProseMirror pre .hljs-string,
+.ProseMirror pre .hljs-regexp,
+.ProseMirror pre .hljs-meta .hljs-string { color: #7fd88f; }
+.ProseMirror pre .hljs-number,
+.ProseMirror pre .hljs-symbol,
+.ProseMirror pre .hljs-bullet { color: #f5a76b; }
+.ProseMirror pre .hljs-title,
+.ProseMirror pre .hljs-section,
+.ProseMirror pre .hljs-function .hljs-title,
+.ProseMirror pre .hljs-name { color: #82aaff; }
+.ProseMirror pre .hljs-attr,
+.ProseMirror pre .hljs-attribute,
+.ProseMirror pre .hljs-variable,
+.ProseMirror pre .hljs-template-variable { color: #ffcb6b; }
+.ProseMirror pre .hljs-built_in,
+.ProseMirror pre .hljs-class .hljs-title { color: #ff8a65; }
+.ProseMirror pre .hljs-tag { color: #89a4c7; }
+.ProseMirror pre .hljs-deletion { color: #e06c75; }
+.ProseMirror pre .hljs-addition { color: #7fd88f; }
+.ProseMirror pre .hljs-emphasis { font-style: italic; }
+.ProseMirror pre .hljs-strong { font-weight: 600; }
+
+/* Notes & research rich editor */
+.notes-editable:empty::before {
+  content: attr(data-placeholder);
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+.notes-editable img { max-width: 100%; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { animation: spin 0.9s linear infinite; }
+
+/* Inline KaTeX equations sit on the text baseline neatly */
+.ProseMirror span[data-math] { vertical-align: middle; }
+
+/* Spotlight a review target when jumped to (marker click or "View in document")
+   — a HIGHLY visible overlay (bright fill + outline + glow) that holds, then
+   fades. ~5s for view-in-document; the .spotlight-short variant is ~3s. */
+@keyframes review-spotlight {
+  0%   { background: color-mix(in srgb, var(--accent) 62%, transparent); box-shadow: 0 0 0 3px var(--accent), 0 0 20px 3px color-mix(in srgb, var(--accent) 55%, transparent); }
+  88%  { background: color-mix(in srgb, var(--accent) 62%, transparent); box-shadow: 0 0 0 3px var(--accent), 0 0 20px 3px color-mix(in srgb, var(--accent) 55%, transparent); }
+  100% { background: transparent; box-shadow: none; }
+}
+.ProseMirror .review-spotlight {
+  animation: review-spotlight 5s ease forwards;
+  border-radius: 3px;
+  color: var(--accent-contrast);
+  padding: 0 1px;
+}
+/* Overlay variant — a positioned highlight box used when jumping from version
+   history (can't be reconciled away by ProseMirror like a node class). */
+@keyframes review-spotlight-ov {
+  0%   { background: color-mix(in srgb, var(--accent) 34%, transparent); box-shadow: 0 0 0 2px var(--accent), 0 0 18px 3px color-mix(in srgb, var(--accent) 50%, transparent); }
+  86%  { background: color-mix(in srgb, var(--accent) 34%, transparent); box-shadow: 0 0 0 2px var(--accent), 0 0 18px 3px color-mix(in srgb, var(--accent) 50%, transparent); }
+  100% { background: transparent; box-shadow: none; }
+}
+.review-spotlight-overlay {
+  border-radius: 4px;
+  animation: review-spotlight-ov 5s ease forwards;
+}
+
+/* Explicit page break — a labelled divider on screen that starts a new page on
+   print/PDF export. */
+.ProseMirror hr[data-page-break] {
+  border: none;
+  height: 0;
+  border-top: 2px dashed var(--border-strong);
+  margin: 1.6em 0;
+  position: relative;
+  break-after: page;
+  page-break-after: always;
+}
+.ProseMirror hr[data-page-break]::after {
+  content: "Page break";
+  position: absolute;
+  top: -0.75em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  background: var(--bg-elev);
+  padding: 0 8px;
+}
+
+/* Infinite canvas — a free-form, full-width / full-height working surface (like
+   a whiteboard) instead of the centered page column. A faint dot grid signals
+   the canvas; doodle + move tools work anywhere across it. */
+[data-doodle-scope][data-infinite-canvas] {
+  /* A continuous line grid that reads as graph paper extending in every
+     direction (the old dot grid was being mistaken for "plain paper with dots"). */
+  background-image:
+    linear-gradient(to right, var(--paper-rule, var(--border)) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--paper-rule, var(--border)) 1px, transparent 1px);
+  background-size: var(--paper-cell, 26px) var(--paper-cell, 26px);
+  background-position: 0 0;
+  border-radius: 6px;
+}
+[data-infinite-canvas] .ProseMirror {
+  min-height: calc(100vh - 200px);
+  padding: 12px 18px;
+}
+
+/* Page borders — a paper-page look around the writing column so the page is
+   visually distinct from the working canvas. */
+[data-doodle-scope][data-page-borders] {
+  background: var(--bg-elev);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.22), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  padding: 56px 64px;
+  margin-top: 8px;
+  margin-bottom: 40px;
+}
+/* Guided margin lines on all four sides (page mode). Inset tracks the padding /
+   custom margin via --guide-y / --guide-x set inline in Workspace. */
+[data-doodle-scope][data-page-borders]::after {
+  content: "";
+  position: absolute;
+  top: var(--guide-y, 56px);
+  bottom: var(--guide-y, 56px);
+  left: var(--guide-x, 64px);
+  right: var(--guide-x, 64px);
+  border: 1px dashed color-mix(in srgb, var(--text) 22%, transparent);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Professional range slider (Grid & canvas / Page margin controls) */
+.pro-range { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 999px; background: var(--bg-elev-3); outline: none; }
+.pro-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg-elev); box-shadow: 0 1px 4px rgba(0,0,0,0.3); cursor: pointer; transition: transform .12s ease; }
+.pro-range::-webkit-slider-thumb:hover { transform: scale(1.18); }
+.pro-range::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg-elev); cursor: pointer; }
+.pro-range::-moz-range-track { height: 6px; border-radius: 999px; background: var(--bg-elev-3); }
+.pro-range:disabled { opacity: .5; cursor: default; }
+
+/* ───────── Paper textures (per-document writing surface) ─────────
+   Ruled lines / dotted grid / graph paper, drawn as a background-image on the
+   page column so any page-fill colour (set via backgroundColor inline) still
+   shows underneath. Placed AFTER the page-border + infinite-canvas rules so a
+   chosen texture re-asserts its image even when those set a `background`
+   shorthand. The line colour is derived from the theme text so it stays legible
+   on both light and dark surfaces. */
+[data-doodle-scope][data-paper-texture] {
+  --paper-rule: color-mix(in srgb, var(--text) 20%, transparent);
+  --paper-rule-strong: color-mix(in srgb, var(--text) 32%, transparent);
+}
+/* Ruled-line paper — text also snaps to a 32px rhythm so it sits on the lines. */
+[data-doodle-scope][data-paper-texture="lines"] {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    var(--paper-rule) 31px,
+    var(--paper-rule) 32px
+  );
+}
+[data-doodle-scope][data-paper-texture="lines"] .ProseMirror p,
+[data-doodle-scope][data-paper-texture="lines"] .ProseMirror li {
+  line-height: 32px;
+}
+/* Dotted grid paper — spacing driven by --paper-dot-gap (custom grid, Pro). */
+[data-doodle-scope][data-paper-texture="dots"] {
+  background-image: radial-gradient(var(--paper-rule) 1.3px, transparent 1.6px);
+  background-size: var(--paper-dot-gap, 22px) var(--paper-dot-gap, 22px);
+  background-position: 0 0;
+}
+/* Graph paper — fine grid (--paper-cell) with a stronger major line every 4 cells. */
+[data-doodle-scope][data-paper-texture="grid"] {
+  background-image:
+    linear-gradient(to right, var(--paper-rule-strong) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--paper-rule-strong) 1px, transparent 1px),
+    linear-gradient(to right, var(--paper-rule) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--paper-rule) 1px, transparent 1px);
+  background-size:
+    calc(var(--paper-cell, 22px) * 4) calc(var(--paper-cell, 22px) * 4),
+    calc(var(--paper-cell, 22px) * 4) calc(var(--paper-cell, 22px) * 4),
+    var(--paper-cell, 22px) var(--paper-cell, 22px),
+    var(--paper-cell, 22px) var(--paper-cell, 22px);
+}
+
+/* ───────── Screenplay auto-format (Scriptwriting mode) ─────────
+   Industry-standard element layout. Margins are % of the content column so the
+   page reads like a screenplay without a fixed inch grid. */
+[data-script-mode] .ProseMirror { font-family: "Courier New", Courier, monospace; font-size: 15px; line-height: 1.5; }
+[data-script-mode] .ProseMirror p[data-sx] { margin: 0 0 0.85em 0; }
+.ProseMirror p[data-sx="scene"] { text-transform: uppercase; font-weight: 700; margin-top: 1.4em; }
+.ProseMirror p[data-sx="action"] { }
+.ProseMirror p[data-sx="shot"] { text-transform: uppercase; font-weight: 600; margin-top: 0.6em; }
+.ProseMirror p[data-sx="character"] { text-transform: uppercase; margin-left: 38%; margin-bottom: 0; }
+.ProseMirror p[data-sx="parenthetical"] { margin-left: 30%; margin-right: 30%; font-style: italic; margin-bottom: 0; }
+.ProseMirror p[data-sx="dialogue"] { margin-left: 18%; margin-right: 22%; }
+.ProseMirror p[data-sx="transition"] { text-transform: uppercase; text-align: right; font-weight: 600; }
+
+/* Auto scene numbers (Final Draft-style) — shown on both margins of each heading */
+[data-scene-numbers] .ProseMirror { counter-reset: fd-scene; }
+[data-scene-numbers] .ProseMirror p[data-sx="scene"] { counter-increment: fd-scene; }
+[data-scene-numbers] .ProseMirror p[data-sx="scene"]::after {
+  content: counter(fd-scene);
+  position: absolute; right: -2.8em; top: 0;
+  font-size: 0.85em; color: var(--text-tertiary); font-family: var(--font-sans);
+}
+[data-scene-numbers] .ProseMirror p[data-sx="scene"] { padding-left: 2.4em; text-indent: -2.4em; }
+[data-scene-numbers] .ProseMirror p[data-sx="scene"]::first-line { } /* keep number inline */
+
+/* Dual dialogue — two speakers side by side */
+.ProseMirror p[data-dual] { margin-left: 0; margin-right: 0; box-sizing: border-box; }
+.ProseMirror p[data-dual="L"] { float: left; width: 46%; clear: left; }
+.ProseMirror p[data-dual="R"] { float: right; width: 46%; }
+.ProseMirror p[data-dual][data-sx="character"] { text-align: center; }
+.ProseMirror p[data-dual] + p:not([data-dual]) { clear: both; }
+/* Subtle element tag shown on hover in script mode for orientation */
+[data-script-mode] .ProseMirror p[data-sx]::before {
+  content: attr(data-sx);
+  position: absolute;
+  left: -76px;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  opacity: 0;
+  transition: opacity 0.15s;
+  font-family: var(--font-sans);
+}
+[data-script-mode] .ProseMirror p[data-sx] { position: relative; }
+[data-script-mode] .ProseMirror p[data-sx]:hover::before { opacity: 0.7; }
+
+/* Anchored comments — subtle highlight + a comment icon; hover reveals content */
+.ProseMirror .has-comment {
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  border-bottom: 1.5px dotted var(--warning);
+  border-radius: 2px;
+  cursor: help;
+}
+.ProseMirror .has-comment::after {
+  content: "";
+  display: inline-block;
+  width: 0.82em;
+  height: 0.82em;
+  margin-left: 2px;
+  vertical-align: -0.12em;
+  background-color: var(--accent);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M5 3h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-4 4V5a2 2 0 0 1 0-2z'/><circle cx='9' cy='9.5' r='1' fill='white'/><circle cx='12.5' cy='9.5' r='1' fill='white'/><circle cx='16' cy='9.5' r='1' fill='white'/></svg>") center / contain no-repeat;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M5 3h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-4 4V5a2 2 0 0 1 0-2z'/></svg>") center / contain no-repeat;
+}
+
+/* Version-history diff: flash a change when jumped to from the change rail */
+@keyframes diff-flash { 0%,70% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 40%, transparent); } 100% { box-shadow: none; } }
+.diff-flash { animation: diff-flash 1.2s ease; border-radius: 3px; }
+
+/* Find & replace match highlighting */
+.ProseMirror .search-match {
+  background: color-mix(in srgb, var(--warning) 34%, transparent);
+  border-radius: 2px;
+}
+.ProseMirror .search-current {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border-radius: 2px;
+}
+.ProseMirror hr {
+  border: none;
+  border-top: 1px solid var(--border-strong);
+  margin: 1.6em 0;
+}
+.ProseMirror hr.ProseMirror-selectednode {
+  border-top-color: var(--accent);
+}
+.ProseMirror a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  margin: 0.6em 0;
+  border: 1px solid var(--border);
+}
+.ProseMirror img.ProseMirror-selectednode {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Move / select tool — the whole block is the drag target (no handle/icon). */
+.move-mode .ProseMirror {
+  cursor: grab;
+}
+.move-mode .ProseMirror > * {
+  border-radius: 6px;
+  cursor: grab;
+  transition: background 120ms ease, outline-color 120ms ease;
+  outline: 1px dashed transparent;
+  outline-offset: 3px;
+}
+.move-mode .ProseMirror > *:hover {
+  background: var(--accent-soft);
+  outline-color: var(--accent);
+}
+.move-mode .ProseMirror > *:active {
+  cursor: grabbing;
+}
+.ProseMirror.pm-moving, .pm-moving .ProseMirror > * {
+  cursor: grabbing !important;
+  user-select: none;
+}
+/* Live drop position indicator while moving a block */
+.pm-drop-indicator {
+  position: fixed;
+  display: none;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent), 0 2px 8px color-mix(in srgb, var(--accent) 50%, transparent);
+  z-index: 75;
+  pointer-events: none;
+}
+.move-mode .ProseMirror .ProseMirror-selectednode {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Placeholder */
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--text-tertiary);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Highlighter mark */
+.ProseMirror mark {
+  background: color-mix(in srgb, var(--warning) 28%, transparent);
+  border-radius: 2px;
+  padding: 0.05em 0;
+}
+
+/* Task list (interactive checkboxes) */
+.ProseMirror ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0.2em;
+}
+.ProseMirror ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55em;
+}
+.ProseMirror ul[data-type="taskList"] li > label {
+  margin-top: 0.36em;
+  user-select: none;
+}
+.ProseMirror ul[data-type="taskList"] li > div {
+  flex: 1;
+}
+.ProseMirror ul[data-type="taskList"] input[type="checkbox"] {
+  width: 1.05em;
+  height: 1.05em;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.ProseMirror ul[data-type="taskList"] li[data-checked="true"] > div {
+  color: var(--text-tertiary);
+  text-decoration: line-through;
+}
+
+/* Tables */
+.ProseMirror table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.8em 0;
+  overflow: hidden;
+  table-layout: fixed;
+}
+.ProseMirror th,
+.ProseMirror td {
+  /* Longhand (not the `border` shorthand) — Lightning CSS drops an all-var()
+     border shorthand. Defaults live in the var() fallback so a per-table
+     override (set on the .tableWrapper via decoration) inherits down here
+     instead of being shadowed by a value redefined on the <table>. */
+  border-width: var(--tbl-bw, 1px);
+  border-style: var(--tbl-bs, solid);
+  border-color: var(--tbl-bc, var(--border-strong));
+  padding: 0.5em 0.7em;
+  vertical-align: top;
+  position: relative;
+  font-size: 1rem;
+}
+.ProseMirror th {
+  background: var(--tbl-header-bg, var(--bg-elev-2));
+  font-weight: 600;
+  text-align: left;
+}
+.ProseMirror .selectedCell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--selection);
+  pointer-events: none;
+}
+.ProseMirror .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent);
+  cursor: col-resize;
+}
+
+/* Line numbers (optional) */
+.line-numbers .ProseMirror {
+  counter-reset: ef-line;
+  padding-left: 3.2em;
+}
+.line-numbers .ProseMirror > * {
+  position: relative;
+}
+.line-numbers .ProseMirror > *::before {
+  counter-increment: ef-line;
+  content: counter(ef-line);
+  position: absolute;
+  left: -3.2em;
+  width: 2.4em;
+  text-align: right;
+  color: var(--text-tertiary);
+  font-size: 0.75em;
+  font-family: var(--font-mono);
+  line-height: inherit;
+  user-select: none;
+  opacity: 0.7;
+}
+
+/* Assigned edit-request marker — avatar dot with assignee initial */
+.ProseMirror span[data-assigned]::after {
+  content: var(--ini, "\2022");
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2em;
+  height: 1.2em;
+  margin: 0 1px 0 3px;
+  border-radius: 50%;
+  background: var(--dot, var(--accent));
+  color: #16161a;
+  font-size: 0.6em;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: super;
+  user-select: none;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+/* AI suite inline markers */
+.ProseMirror .mark-grammar {
+  text-decoration: underline wavy var(--danger);
+  text-decoration-skip-ink: none;
+  text-underline-offset: 3px;
+}
+.ProseMirror .mark-clarity {
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  border-radius: 2px;
+}
+
+/* ───────────────────────── Utilities ───────────────────────── */
+.fade-ui {
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.zen-hidden {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.saving-dot {
+  animation: pulse-dot 1s ease-in-out infinite;
+}
+
+/* Marketing-site marquee */
+@keyframes authorr-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.authorr-marquee {
+  animation: authorr-marquee 32s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .authorr-marquee {
+    animation: none;
+  }
+}
+
+/* ───────────────────── Authorr design-system (marketing) ─────────────────────
+   Brand refresh in WARM DARK mode + single orange accent. Same token names as
+   the light spec, dark values — the whole marketing page re-themes from these.
+   Scoped to `.authorr-ds` so it never affects the Eclipse app theme. */
+.authorr-ds {
+  /* Authorr design-system handoff — REPALETTE (light): fern-green ramp + warm
+     cream/sand + pencil-grey doodle ink, over warm paper + matte charcoal ink.
+     Exact tokens from the handoff bundle `tokens/colors.css`. */
+  --green-900: #0d530e; --green-700: #306d29; --green-500: #4d8a44; --green-300: #8fb986; --green-200: #cfe0c6; --green-050: #eef4ea;
+  --sand-300: #e7e1b1; --sand-200: #f1ecca; --sand-100: #fbf5dd;
+  --pencil-600: #5d5a55; --pencil-500: #6b6862; --pencil-300: #908c85;
+  --ink-900: #1a1615; --ink-700: #423c3a; --ink-500: #666261; --ink-400: #8a8584; --ink-300: #b4afae;
+  --paper-0: #ffffff; --paper-50: #fafafa; --paper-100: #f5f3f2; --paper-200: #efedec;
+  --glow-peach: #fbf5dd; --glow-rose: #f3eed1;
+  --line-100: #eae8e7; --line-200: #dddad8;
+  --success-500: #306d29; --success-100: #e3efdd; --green-100: var(--success-100);
+  --amber-500: #b8740a; --red-500: #c8402f; --blue-500: #3a6ea5;
+
+  --bg-app: var(--paper-50); --surface-card: var(--paper-0); --surface-sunken: var(--paper-100);
+  --surface-inverse: var(--green-900);
+  --text-heading: var(--ink-900); --text-body: var(--ink-500); --text-strong: var(--ink-700); --text-muted: var(--ink-400); --text-faint: var(--ink-300);
+  --text-on-accent: #ffffff; --text-on-inverse: var(--sand-100);
+  --accent: var(--green-700); --accent-hover: var(--green-900); --accent-soft: var(--green-200); --accent-wash: var(--green-050);
+  --marker: var(--sand-300); --doodle: var(--pencil-500);
+  --border: var(--line-100); --border-strong: var(--line-200); --focus-ring: var(--green-700);
+  --status-draft: var(--ink-400); --status-review: var(--amber-500); --status-published: var(--success-500);
+  --selection: rgba(48, 109, 41, 0.16);
+
+  --radius-xs: 6px; --radius-sm: 10px; --radius-md: 14px; --radius-lg: 20px; --radius-xl: 28px; --radius-pill: 999px;
+  --shadow-xs: 0 1px 2px rgba(26,22,21,0.04); --shadow-sm: 0 2px 8px rgba(26,22,21,0.05);
+  --shadow-md: 0 12px 28px -12px rgba(26,22,21,0.12); --shadow-lg: 0 40px 90px -40px rgba(26,22,21,0.22);
+  --shadow-accent: 0 18px 40px -18px rgba(48,109,41,0.42); --shadow-focus: 0 0 0 3px rgba(48,109,41,0.22);
+  /* Ambient glow — soft warm radial wash for full-bleed sections (over paper). */
+  --glow-bg:
+    radial-gradient(60% 55% at 18% 12%, var(--glow-peach) 0%, transparent 60%),
+    radial-gradient(55% 50% at 88% 8%, var(--glow-rose) 0%, transparent 55%),
+    radial-gradient(50% 60% at 75% 90%, var(--glow-peach) 0%, transparent 60%);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); --dur-fast: 140ms; --dur-base: 220ms;
+
+  --font-display: var(--font-hanken), "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --font-ui: var(--font-hanken), "Helvetica Neue", system-ui, sans-serif;
+  --font-body: var(--font-onest), "Segoe UI", system-ui, sans-serif;
+  --font-serif: var(--font-body);
+
+  background: var(--bg-app);
+  color: var(--text-body);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+.authorr-ds ::selection { background: var(--selection); }
+.authorr-ds a { color: inherit; text-decoration: none; }
+/* Creative backdrop: faint 72px technical grid over warm white (light design). */
+.authorr-ds.grid-bg, .authorr-ds .grid-bg {
+  background-color: var(--paper-0);
+  background-image:
+    linear-gradient(to right, var(--line-100) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line-100) 1px, transparent 1px);
+  background-size: 72px 72px;
+  background-position: center top;
+}
+/* Hero gets a soft warm wash bleeding from the top, fading into the grid. */
+.authorr-ds .hero-wash {
+  background:
+    radial-gradient(60% 50% at 50% -8%, var(--accent-wash) 0%, transparent 60%),
+    radial-gradient(45% 40% at 88% 4%, var(--glow-rose) 0%, transparent 55%);
+}
+
+.authorr-ds .navlink { transition: color var(--dur-fast) var(--ease-out); }
+.authorr-ds .navlink:hover { color: var(--ink-900); }
+
+/* Studio-sketchbook doodle layer — hand-drawn marker annotations that point at,
+   never just decorate. Caveat marker face, gentle float, hidden on narrow screens. */
+.authorr-ds .ds-doodle {
+  position: absolute;
+  font-family: var(--font-doodle), "Comic Sans MS", cursive;
+  color: var(--doodle);
+  pointer-events: none;
+  z-index: 4;
+  animation: dsDoodleFloat 6s var(--ease-in-out, ease-in-out) infinite;
+}
+.authorr-ds .ds-doodle svg { display: block; overflow: visible; }
+.authorr-ds .ds-doodle .ds-doodle-stroke {
+  stroke: var(--doodle);
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+@keyframes dsDoodleFloat {
+  0%, 100% { transform: var(--doodle-rot, rotate(-4deg)) translateY(0); }
+  50% { transform: var(--doodle-rot, rotate(-4deg)) translateY(-5px); }
+}
+@media (max-width: 920px) {
+  .authorr-ds .ds-doodle { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .authorr-ds .ds-doodle { animation: none; }
+}
+
+.authorr-ds .ds-btn { transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+.authorr-ds .ds-btn:active { transform: scale(0.98); }
+.authorr-ds .ds-btn-primary:hover { background: var(--accent-hover); }
+.authorr-ds .ds-btn-secondary:hover { background: var(--surface-sunken); }
+.authorr-ds .ds-btn-ghost:hover { background: var(--surface-sunken); color: var(--ink-900); }
+.authorr-ds .ds-btn:focus-visible,
+.authorr-ds a:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+
+.authorr-ds .ds-card-interactive { transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out); }
+.authorr-ds .ds-card-interactive:hover { border-color: var(--border-strong); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+.authorr-ds details.faq summary::-webkit-details-marker { display: none; }
+.authorr-ds details.faq[open] .faq-chev { transform: rotate(90deg); }
+.authorr-ds .faq-chev { transition: transform var(--dur-base) var(--ease-out); }
+
+@keyframes authorr-ds-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.authorr-ds .ds-marquee { animation: authorr-ds-marquee 36s linear infinite; }
+
+@media (max-width: 920px) { .authorr-ds .nav-links { display: none !important; } }
+@media (prefers-reduced-motion: reduce) { .authorr-ds .ds-marquee { animation: none; } }
+
+/* Smooth scrolling for the marketing site. Scroll-triggered reveal + stagger is
+   now handled by Framer Motion (components/marketing/Reveal.tsx), per the
+   Authorr handoff which is built on the framer-motion bundle. */
+html { scroll-behavior: smooth; }
+.authorr-ds section[id] { scroll-margin-top: 88px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* ── Auth pages (Clerk sign-in / sign-up) ── */
+@media (min-width: 860px) {
+  .auth-brand-col { display: flex !important; }
+  .auth-divider { display: block !important; }
+  .auth-mobile-logo { display: none !important; }
+}
+.auth-side-doodle { display: none; }
+@media (min-width: 1180px) {
+  .auth-side-doodle { display: block; }
+}
+
+/* ── Modern slider (zoom / brightness) ── */
+.ef-slider { outline: none; }
+.ef-slider .ef-slider-thumb { transition: transform .12s ease, box-shadow .12s ease; }
+.ef-slider:hover .ef-slider-thumb { transform: translateX(-50%) scale(1.12); }
+.ef-slider:focus-visible .ef-slider-thumb { box-shadow: 0 0 0 4px var(--accent-soft, rgba(120,120,120,0.3)), 0 1px 5px rgba(0,0,0,0.32); }
+.ef-slider:active .ef-slider-thumb { transform: translateX(-50%) scale(1.18); }
+
+/* ── Template gallery: rendered mini-document thumbnails ── */
+.tpl-card { transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease; }
+.tpl-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px -14px rgba(0,0,0,0.45); border-color: var(--accent); }
+.tpl-thumb { font-family: var(--font-reading), Georgia, serif; font-size: 13px; line-height: 1.5; color: #423c3a; }
+.tpl-thumb h1 { font-size: 25px; margin: 0 0 6px; font-weight: 700; line-height: 1.15; }
+.tpl-thumb h2 { font-size: 17px; margin: 13px 0 4px; font-weight: 700; }
+.tpl-thumb h3 { font-size: 14px; margin: 10px 0 3px; font-weight: 700; }
+.tpl-thumb p { margin: 4px 0; }
+.tpl-thumb em { color: #8a8584; }
+.tpl-thumb hr { border: none; border-top: 1px solid #e3e1e0; margin: 9px 0; }
+.tpl-thumb table { border-collapse: collapse; width: 100%; margin: 7px 0; }
+.tpl-thumb th, .tpl-thumb td { border: 1px solid #ddd; padding: 4px 7px; font-size: 12px; text-align: left; vertical-align: top; }
+.tpl-thumb th { background: #f5f3f2; }
+.tpl-thumb ul, .tpl-thumb ol { margin: 4px 0; padding-left: 18px; }
+.tpl-thumb li { margin: 2px 0; }
+.tpl-thumb blockquote { border-left: 3px solid #cfcdcb; margin: 7px 0; padding: 2px 0 2px 11px; color: #555; }
+.tpl-thumb ul[data-type="taskList"] { list-style: none; padding-left: 4px; }
+.tpl-thumb ul[data-type="taskList"] li::before { content: "☐ "; color: #888; }
