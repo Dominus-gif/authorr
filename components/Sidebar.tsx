@@ -11,6 +11,7 @@ import {
   Trash2,
   PenLine,
   Palette,
+  Lock,
 } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { STATUS_META, NODE_COLORS, type TreeNode } from "@/lib/types";
@@ -265,13 +266,21 @@ const iconBtn: React.CSSProperties = {
   color: "var(--text-tertiary)",
 };
 
-const WORKSPACES = ["Personal", "Team", "Client"];
+const WORKSPACES: { id: "personal" | "team"; label: string }[] = [
+  { id: "personal", label: "Personal" },
+  { id: "team", label: "Team" },
+];
 
 export function Sidebar() {
   const { tree, addDoc, addFolder } = useStore();
   const sidebarWidth = useStore((s) => s.sidebarWidth);
   const setPanelWidth = useStore((s) => s.setPanelWidth);
-  const [workspace, setWorkspace] = useState("Personal");
+  const workspace = useStore((s) => s.sidebarWorkspace);
+  const setWorkspace = useStore((s) => s.setSidebarWorkspace);
+  const isFree = useStore((s) => s.plan === "free");
+  const requireFeature = useStore((s) => s.requireFeature);
+  // Documents are separated into Personal vs Team by their collabMode.
+  const roots = tree.filter((n) => (n.collabMode ?? "personal") === workspace);
 
   return (
     <aside
@@ -295,23 +304,36 @@ export function Sidebar() {
         }}
       >
         <div style={{ display: "flex", gap: 4 }}>
-          {WORKSPACES.map((w) => (
-            <button
-              key={w}
-              onClick={() => setWorkspace(w)}
-              style={{
-                flex: 1,
-                fontSize: 12,
-                padding: "5px 0",
-                borderRadius: 7,
-                fontWeight: workspace === w ? 500 : 400,
-                color: workspace === w ? "var(--accent-contrast)" : "var(--text-secondary)",
-                background: workspace === w ? "var(--accent)" : "transparent",
-              }}
-            >
-              {w}
-            </button>
-          ))}
+          {WORKSPACES.map((w) => {
+            const active = workspace === w.id;
+            const locked = isFree && w.id === "team";
+            return (
+              <button
+                key={w.id}
+                onClick={() => {
+                  if (locked) { requireFeature("collaboration"); return; }
+                  setWorkspace(w.id);
+                }}
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 5,
+                  fontSize: 12,
+                  padding: "5px 0",
+                  borderRadius: 7,
+                  fontWeight: active ? 500 : 400,
+                  color: active ? "var(--accent-contrast)" : "var(--text-secondary)",
+                  background: active ? "var(--accent)" : "transparent",
+                  opacity: locked ? 0.7 : 1,
+                }}
+              >
+                {locked && <Lock size={11} />}
+                {w.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -344,9 +366,14 @@ export function Sidebar() {
       </div>
 
       <div style={{ flex: 1, overflowY: "auto", paddingBottom: 12 }}>
-        {tree.map((node) => (
+        {roots.map((node) => (
           <Row key={node.id} node={node} depth={0} />
         ))}
+        {roots.length === 0 && (
+          <p style={{ fontSize: 12, color: "var(--text-tertiary)", padding: "10px 16px", lineHeight: 1.5 }}>
+            No {workspace} documents yet. Use + to create one here.
+          </p>
+        )}
       </div>
 
       <LayoutControls />

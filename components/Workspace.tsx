@@ -66,6 +66,14 @@ export function Workspace() {
   useEffect(() => {
     if (plan === "free" && workMode !== "casual") setWorkMode("casual");
   }, [plan, workMode, setWorkMode]);
+  // On phones, collapse the side panels on first load so the editor is full-width.
+  useEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth >= 768) return;
+    const st = useStore.getState();
+    if (st.sidebarOpen) st.toggleSidebar();
+    if (st.aiPanelOpen) st.toggleAIPanel();
+    if (st.splitView) st.toggleSplitView();
+  }, []);
   const zoom = useStore((s) => s.zoom);
   const pageBorders = useStore((s) => s.pageBorders);
   const pageColors = useStore((s) => s.pageColors);

@@ -3,7 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { UserCircle2, LayoutTemplate, Trash2, Archive, Cloud, ChevronDown } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
 import { useStore } from "@/lib/store";
+
+const clerkEnabled = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 /** Bottom-left hub: account, templates, trash, archive, cloud storage. */
 export function SidebarFooter() {
@@ -85,13 +88,9 @@ export function SidebarFooter() {
         onMouseLeave={(e) => { if (!menuOpen) e.currentTarget.style.background = "transparent"; }}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <span style={{ width: 28, height: 28, borderRadius: "50%", background: me?.color ?? "var(--accent)", color: "#16161a", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-          {me?.name.charAt(0) ?? "?"}
-        </span>
-        <span style={{ display: "flex", flexDirection: "column", flex: 1, minWidth: 0, textAlign: "left" }}>
-          <span style={{ fontSize: 12.5, fontWeight: 600, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{me?.name ?? "Account"}</span>
-          <span style={{ fontSize: 10.5, color: "var(--text-tertiary)" }}>Settings & account</span>
-        </span>
+        {clerkEnabled
+          ? <ClerkIdentity color={me?.color ?? "var(--accent)"} />
+          : <IdentityInner color={me?.color ?? "var(--accent)"} initial={me?.name.charAt(0) ?? "?"} name={me?.name ?? "Account"} sub="Settings & account" />}
         <ChevronDown size={14} style={{ color: "var(--text-tertiary)", transform: menuOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }} />
       </button>
 
@@ -108,4 +107,31 @@ export function SidebarFooter() {
       )}
     </div>
   );
+}
+
+/** Inner avatar + name + subtitle used by both the seed and Clerk variants. */
+function IdentityInner({ color, initial, name, sub, img }: { color: string; initial: string; name: string; sub: string; img?: string }) {
+  return (
+    <>
+      <span style={{ width: 28, height: 28, borderRadius: "50%", background: color, color: "#16161a", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
+        {img ? <img src={img} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : initial}
+      </span>
+      <span style={{ display: "flex", flexDirection: "column", flex: 1, minWidth: 0, textAlign: "left" }}>
+        <span style={{ fontSize: 12.5, fontWeight: 600, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{name}</span>
+        <span style={{ fontSize: 10.5, color: "var(--text-tertiary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{sub}</span>
+      </span>
+    </>
+  );
+}
+
+/** The real signed-in Clerk identity (name + a short user id). */
+function ClerkIdentity({ color }: { color: string }) {
+  const { isSignedIn, user } = useUser();
+  if (!isSignedIn || !user) {
+    return <IdentityInner color={color} initial="?" name="Account" sub="Sign in" />;
+  }
+  const name =
+    user.fullName || user.username || user.primaryEmailAddress?.emailAddress || "Account";
+  const shortId = user.id.replace(/^user_/, "").slice(0, 10);
+  return <IdentityInner color={color} initial={name.charAt(0).toUpperCase()} name={name} sub={`ID · ${shortId}`} img={user.imageUrl} />;
 }

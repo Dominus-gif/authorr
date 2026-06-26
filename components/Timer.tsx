@@ -29,6 +29,26 @@ export function Timer() {
   const [ch, setCh] = useState(0);
   const [cm, setCm] = useState(20);
   const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [pos, setPos] = useState<{ left: number; top: number } | null>(null);
+  const dragging = useRef(false);
+
+  // Drag by the header. Smooth follow; clamped to the viewport.
+  const onDragStart = (e: React.PointerEvent) => {
+    const el = (e.currentTarget as HTMLElement).closest("[data-timer]") as HTMLElement | null;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const offX = e.clientX - r.left, offY = e.clientY - r.top;
+    dragging.current = true;
+    const move = (ev: PointerEvent) => {
+      setPos({
+        left: Math.max(8, Math.min(window.innerWidth - r.width - 8, ev.clientX - offX)),
+        top: Math.max(8, Math.min(window.innerHeight - 56, ev.clientY - offY)),
+      });
+    };
+    const up = () => { dragging.current = false; window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  };
 
   useEffect(() => {
     if (!running) {
@@ -72,12 +92,16 @@ export function Timer() {
 
   return (
     <div
-      style={{ position: "fixed", bottom: 86, right: 22, zIndex: 120, width: 234, background: "var(--bg-elev)", border: "1px solid var(--border-strong)", borderRadius: 18, boxShadow: "0 18px 48px rgba(0,0,0,0.4)", overflow: "hidden" }}
+      data-timer
+      style={{ position: "fixed", zIndex: 120, width: 212, background: "var(--bg-elev)", border: "1px solid var(--border-strong)", borderRadius: 16, boxShadow: "0 18px 48px rgba(0,0,0,0.4)", overflow: "hidden", transition: "box-shadow .2s ease", ...(pos ? { left: pos.left, top: pos.top } : { bottom: 24, right: 22 }) }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 13px", borderBottom: "1px solid var(--border)" }}>
+      <div
+        onPointerDown={onDragStart}
+        style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 12px", borderBottom: "1px solid var(--border)", cursor: "grab", touchAction: "none", userSelect: "none" }}
+      >
         <TimerIcon size={15} style={{ color: "var(--accent)" }} />
         <span style={{ fontSize: 13, fontWeight: 600, color: "var(--text)" }}>Focus timer</span>
-        <button onClick={() => setOpen(false)} aria-label="Close timer" style={{ marginLeft: "auto", color: "var(--text-secondary)", display: "flex" }}><X size={16} /></button>
+        <button onPointerDown={(e) => e.stopPropagation()} onClick={() => setOpen(false)} aria-label="Close timer" style={{ marginLeft: "auto", color: "var(--text-secondary)", display: "flex" }}><X size={16} /></button>
       </div>
 
       <div style={{ padding: "16px 14px", display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>

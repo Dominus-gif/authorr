@@ -334,7 +334,16 @@ body {
   line-height: 1.85;
   font-size: 1.125rem;
   caret-color: var(--accent);
+  /* Smoother, more polished typing — crisp glyphs + a calm caret. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-variant-ligatures: contextual common-ligatures;
+  scroll-behavior: smooth;
 }
+/* Gentle caret pulse (Word-like) rather than a hard blink. */
+@keyframes ef-caret { 0%, 45% { opacity: 1; } 55%, 100% { opacity: 0.35; } }
+.ProseMirror:focus { caret-color: var(--accent); }
 
 .ProseMirror > * + * {
   margin-top: 0.85em;
@@ -500,13 +509,9 @@ body {
    a whiteboard) instead of the centered page column. A faint dot grid signals
    the canvas; doodle + move tools work anywhere across it. */
 [data-doodle-scope][data-infinite-canvas] {
-  /* A continuous line grid that reads as graph paper extending in every
-     direction (the old dot grid was being mistaken for "plain paper with dots"). */
-  background-image:
-    linear-gradient(to right, var(--paper-rule, var(--border)) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--paper-rule, var(--border)) 1px, transparent 1px);
-  background-size: var(--paper-cell, 26px) var(--paper-cell, 26px);
-  background-position: 0 0;
+  /* Free-form surface. The pattern (none / lines / dots / graph) is driven by the
+     selected paper texture below, NOT forced here — so "Plain" is truly blank and
+     "Lines" shows lines, on the infinite canvas just like a normal page. */
   border-radius: 6px;
 }
 [data-infinite-canvas] .ProseMirror {
@@ -1040,6 +1045,23 @@ html { scroll-behavior: smooth; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+}
+
+/* ───────── Mobile / phone optimization ───────── */
+@media (max-width: 768px) {
+  /* Top bar scrolls horizontally instead of overflowing its many controls. */
+  .ef-topbar { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+  .ef-topbar::-webkit-scrollbar { display: none; }
+  /* Tighter writing-column gutters so text isn't cramped on a narrow screen. */
+  [data-editor-scroll] { padding-left: 12px !important; padding-right: 12px !important; }
+  [data-doodle-scope] { max-width: 100% !important; }
+  /* Page-border padding is heavy on phones — slim it down. */
+  [data-doodle-scope][data-page-borders] { padding: 24px 18px !important; }
+  /* Modals/dialogs use the full width with small gutters. */
+  [role="dialog"] > div { max-width: 100% !important; }
+}
+@media (max-width: 480px) {
+  [data-doodle-scope][data-page-borders] { padding: 16px 12px !important; }
 }
 
 /* ── Auth pages (Clerk sign-in / sign-up) ── */

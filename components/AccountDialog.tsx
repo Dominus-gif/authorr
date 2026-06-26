@@ -105,6 +105,20 @@ function BillingTab() {
   const plan = useStore((s) => s.plan);
   const setPlan = useStore((s) => s.setPlan);
   const showToast = useStore((s) => s.showToast);
+  const rank = (p: Plan) => PLAN_ORDER.indexOf(p);
+  const isPaid = plan !== "free";
+
+  // Real subscriptions go through Dodo Payments checkout; this prototype switches
+  // locally and explains the production path. Downgrades happen only by cancelling
+  // (i.e. payment is revoked → reverts to Free), never by manually picking Free.
+  const subscribe = (p: Plan) => {
+    setPlan(p);
+    showToast(`Subscribed to ${PLAN_META[p].name}. (Production opens Dodo checkout.)`);
+  };
+  const cancel = () => {
+    setPlan("free");
+    showToast("Subscription cancelled — reverted to Free.");
+  };
 
   return (
     <>
@@ -115,6 +129,9 @@ function BillingTab() {
         {PLAN_ORDER.map((p) => {
           const m = PLAN_META[p];
           const active = plan === p;
+          const isUpgrade = rank(p) > rank(plan);
+          // Paid users never see a manual "switch to Free"; only higher tiers + their current plan.
+          if (!active && !isUpgrade) return null;
           return (
             <div key={p} style={{ border: active ? "1px solid var(--accent)" : "1px solid var(--border)", background: active ? "var(--accent-soft)" : "var(--bg-elev-2)", borderRadius: 12, padding: 13 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -124,17 +141,26 @@ function BillingTab() {
                 {active && <span style={{ marginLeft: "auto", fontSize: 11, fontWeight: 600, color: "var(--accent)" }}>Current</span>}
               </div>
               <div style={{ fontSize: 12, color: "var(--text-secondary)", margin: "5px 0 10px" }}>{m.tagline}</div>
-              {!active && (
-                <button onClick={() => { setPlan(p); showToast(`Switched to the ${m.name} plan.`); }}
-                  style={{ width: "100%", padding: "8px 0", borderRadius: 9, fontSize: 12.5, fontWeight: 600, color: p === "free" ? "var(--text-secondary)" : "var(--accent-contrast)", background: p === "free" ? "transparent" : "var(--accent)", border: p === "free" ? "1px solid var(--border-strong)" : "none" }}>
-                  {PLAN_ORDER.indexOf(p) > PLAN_ORDER.indexOf(plan) ? `Upgrade to ${m.name}` : `Switch to ${m.name}`}
+              {isUpgrade && (
+                <button onClick={() => subscribe(p)}
+                  style={{ width: "100%", padding: "8px 0", borderRadius: 9, fontSize: 12.5, fontWeight: 600, color: "var(--accent-contrast)", background: "var(--accent)", border: "none" }}>
+                  Subscribe to {m.name}
                 </button>
               )}
             </div>
           );
         })}
       </div>
-      <p style={{ fontSize: 11, color: "var(--text-tertiary)", marginTop: 12, textAlign: "center", lineHeight: 1.5 }}>Prototype: plan changes are instant &amp; local. Real billing arrives with the backend.</p>
+
+      {/* Paid users downgrade ONLY by cancelling (payment revoked → Free). */}
+      {isPaid && (
+        <button onClick={cancel} style={{ width: "100%", marginTop: 12, padding: "8px 0", borderRadius: 9, fontSize: 12.5, fontWeight: 600, color: "var(--danger)", border: "1px solid var(--border-strong)", background: "transparent" }}>
+          Cancel subscription
+        </button>
+      )}
+      <p style={{ fontSize: 11, color: "var(--text-tertiary)", marginTop: 12, textAlign: "center", lineHeight: 1.5 }}>
+        Plans are paid via Dodo Payments; your plan auto-reverts to Free if the subscription ends. (Prototype switches locally.)
+      </p>
     </>
   );
 }

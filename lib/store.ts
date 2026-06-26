@@ -299,6 +299,10 @@ interface StoreState {
   // Focus timer (Pro/Team) — ephemeral floating widget toggle.
   timerOpen: boolean;
   setTimerOpen: (open: boolean) => void;
+  /** Which sidebar workspace tab is active — documents are separated into
+   *  Personal vs Team by their `collabMode`. */
+  sidebarWorkspace: "personal" | "team";
+  setSidebarWorkspace: (w: "personal" | "team") => void;
   // Cloud document sync (Supabase). Ephemeral — not persisted.
   cloudStatus: "idle" | "syncing" | "synced" | "error";
   cloudError: string | null;
@@ -568,6 +572,7 @@ export const useStore = create<StoreState>()(
       grid: { ...DEFAULT_GRID },
       pageMargin: 0,
       timerOpen: false,
+      sidebarWorkspace: "personal",
       cloudStatus: "idle",
       cloudError: null,
       lastCloudSyncAt: null,
@@ -680,6 +685,8 @@ export const useStore = create<StoreState>()(
           creatorName: me?.name,
           editCount: 0,
           contributors: me ? [{ id: me.id, name: me.name }] : [],
+          // Root-level docs belong to the active sidebar workspace (Personal/Team).
+          collabMode: parentId ? undefined : st.sidebarWorkspace,
         };
         set((s) => ({
           tree: insertChild(s.tree, parentId, doc),
@@ -708,6 +715,7 @@ export const useStore = create<StoreState>()(
           name: "New folder",
           expanded: true,
           children: [],
+          collabMode: parentId ? undefined : st.sidebarWorkspace,
         };
         set((s) => ({
           tree: insertChild(s.tree, parentId, folder),
@@ -1058,6 +1066,7 @@ export const useStore = create<StoreState>()(
       setActiveApiKey: (id) => set({ activeApiKeyId: id }),
       setGrid: (patch) => set((s) => ({ grid: { ...s.grid, ...patch } })),
       setTimerOpen: (timerOpen) => set({ timerOpen }),
+      setSidebarWorkspace: (sidebarWorkspace) => set({ sidebarWorkspace }),
       setCloudStatus: (cloudStatus, cloudError = null) =>
         set({ cloudStatus, cloudError, lastCloudSyncAt: cloudStatus === "synced" ? Date.now() : get().lastCloudSyncAt }),
       mergeCloudDocs: (nodes) => set((s) => {

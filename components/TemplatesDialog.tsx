@@ -85,14 +85,16 @@ export function TemplatesDialog() {
                   className="tpl-card"
                   style={{ textAlign: "left", display: "flex", flexDirection: "column", borderRadius: 12, overflow: "hidden", border: "1px solid var(--border-strong)", background: "var(--bg-elev-2)", cursor: "pointer" }}
                 >
-                  {/* Rendered mini preview of the actual template document */}
-                  <div style={{ position: "relative", height: 150, overflow: "hidden", background: "#ffffff", borderBottom: "1px solid var(--border)" }}>
-                    <div
-                      aria-hidden
-                      className="tpl-thumb"
-                      style={{ position: "absolute", top: 0, left: 0, width: 600, transform: "scale(0.35)", transformOrigin: "top left", padding: "26px 30px", pointerEvents: "none" }}
-                      dangerouslySetInnerHTML={{ __html: tpl.html }}
-                    />
+                  {/* Clean document-mockup preview (crisp at any size; renders the
+                      accent + a faux page layout instead of fragile scaled HTML). */}
+                  <div style={{ position: "relative", height: 132, overflow: "hidden", background: "#ffffff", borderBottom: "1px solid var(--border)" }}>
+                    <div style={{ position: "absolute", inset: 0, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 7 }}>
+                      <div style={{ width: "58%", height: 9, borderRadius: 3, background: tpl.accent }} />
+                      <div style={{ width: "38%", height: 5, borderRadius: 3, background: "#d9d6d4", marginBottom: 4 }} />
+                      {[92, 100, 84, 96, 70].map((w, i) => (
+                        <div key={i} style={{ width: `${w}%`, height: 4, borderRadius: 3, background: "#e7e4e2" }} />
+                      ))}
+                    </div>
                     {/* accent ribbon */}
                     <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 4, background: tpl.accent }} />
                   </div>

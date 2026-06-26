@@ -174,6 +174,7 @@ export function TopBar() {
 
   return (
     <header
+      className="ef-topbar"
       style={{
         height: 52,
         flexShrink: 0,

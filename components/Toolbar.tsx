@@ -302,7 +302,15 @@ export function Toolbar() {
       <Btn icon={MessageSquarePlus} label={withKey("Add comment to selection", "comment")} active={editor.isActive("comment")} onClick={addComment} />
       <Btn icon={Sigma} label="Special characters & equations" onClick={() => setSymbolPickerOpen(true)} />
       {!isFree && <Btn icon={Languages} label="Translate" onClick={() => setTranslateOpen(true)} />}
-      {!isFree && <Btn icon={TimerIcon} label="Focus timer" active={timerOpen} onClick={() => setTimerOpen(!timerOpen)} />}
+      {!isFree && (
+        <button
+          onClick={() => setTimerOpen(!timerOpen)}
+          title="Focus timer"
+          style={{ display: "flex", alignItems: "center", gap: 6, height: 30, padding: "0 11px", borderRadius: 8, fontSize: 12.5, fontWeight: 500, whiteSpace: "nowrap", border: "1px solid var(--border)", color: timerOpen ? "var(--accent)" : "var(--text-secondary)", background: timerOpen ? "var(--accent-soft)" : "transparent" }}
+        >
+          <TimerIcon size={15} /> Focus Timer
+        </button>
+      )}
       <Sep />
       <Btn icon={MousePointerSquareDashed} label="Move tool — drag any element to reposition it" active={moveMode} onClick={toggleMoveMode} />
       <span style={{ flex: 1, minWidth: 8 }} />
