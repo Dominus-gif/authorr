@@ -26,6 +26,7 @@ import { UpgradePrompt } from "./UpgradePrompt";
 import { PlanUpgradeModal } from "./PlanUpgradeModal";
 import { CloudSync } from "./CloudSync";
 import { Timer } from "./Timer";
+import { LinkDialog } from "./LinkDialog";
 import { supabaseEnabled } from "@/lib/supabase";
 
 // Cloud sync runs only when both auth (Clerk) and storage (Supabase) are configured.
@@ -74,6 +75,33 @@ export function Workspace() {
     if (st.aiPanelOpen) st.toggleAIPanel();
     if (st.splitView) st.toggleSplitView();
   }, []);
+  // Ctrl/⌘ + wheel zooms the canvas (Excalidraw-style). Non-passive so we can
+  // preventDefault the browser's page zoom.
+  useEffect(() => {
+    const el = document.querySelector("[data-editor-scroll]") as HTMLElement | null;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      if (!e.ctrlKey && !e.metaKey) return;
+      e.preventDefault();
+      const st = useStore.getState();
+      st.setZoom(st.zoom + (e.deltaY > 0 ? -0.08 : 0.08));
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [hydrated]);
+
+  /** Middle-mouse drag pans the canvas (works wherever the surface scrolls). */
+  const panPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 1) return;
+    e.preventDefault();
+    const el = e.currentTarget;
+    const startX = e.clientX, startY = e.clientY, sl = el.scrollLeft, st = el.scrollTop;
+    el.style.cursor = "grabbing";
+    const move = (ev: PointerEvent) => { el.scrollLeft = sl - (ev.clientX - startX); el.scrollTop = st - (ev.clientY - startY); };
+    const up = () => { el.style.cursor = ""; window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  };
   const zoom = useStore((s) => s.zoom);
   const pageBorders = useStore((s) => s.pageBorders);
   const pageColors = useStore((s) => s.pageColors);
@@ -366,10 +394,11 @@ export function Workspace() {
             )}
             <div
               data-editor-scroll
+              onPointerDown={panPointerDown}
               style={{
                 flex: 1,
                 position: "relative",
-                overflowY: "auto",
+                overflow: infiniteCanvas ? "auto" : "hidden auto",
                 padding: zen ? "8vh 24px 24vh" : "32px 24px 30vh",
               }}
             >
@@ -381,7 +410,7 @@ export function Workspace() {
                 data-page-borders={pageBorders && !infiniteCanvas ? "" : undefined}
                 data-infinite-canvas={infiniteCanvas ? "" : undefined}
                 data-paper-texture={doc && paperTextures[doc.id] ? paperTextures[doc.id] : undefined}
-                style={{ ...gridVars, maxWidth: infiniteCanvas ? "100%" : pageWidth(pageSize), width: infiniteCanvas ? "100%" : undefined, margin: infiniteCanvas ? 0 : "0 auto", position: "relative", zoom, minHeight: infiniteCanvas ? "calc(100vh - 180px)" : undefined, ...(pageMargin > 0 && pageBorders && !infiniteCanvas ? { padding: pageMargin } : null), ...(doc && pageColors[doc.id] ? { backgroundColor: pageColors[doc.id] } : null) } as React.CSSProperties}
+                style={{ ...gridVars, maxWidth: infiniteCanvas ? "none" : pageWidth(pageSize), width: infiniteCanvas ? 2400 : undefined, margin: infiniteCanvas ? 0 : "0 auto", position: "relative", zoom, minHeight: infiniteCanvas ? 1600 : undefined, ...(pageMargin > 0 && pageBorders && !infiniteCanvas ? { padding: pageMargin } : null), ...(doc && pageColors[doc.id] ? { backgroundColor: pageColors[doc.id] } : null) } as React.CSSProperties}
               >
                 {doc ? (
                   <Editor
@@ -469,6 +498,7 @@ export function Workspace() {
       <PlanUpgradeModal />
       {cloudReady && <CloudSync />}
       <Timer />
+      <LinkDialog />
       <PasscodeDialog />
       <ShareDialog />
       <FindReplace />

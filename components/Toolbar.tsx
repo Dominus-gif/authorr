@@ -151,20 +151,7 @@ export function Toolbar() {
   if (!editor) return null;
   const c = () => editor.chain().focus();
 
-  const setLink = () => {
-    const prev = editor.getAttributes("link").href as string | undefined;
-    openPrompt({
-      title: "Add link",
-      label: "Link URL (leave empty to remove)",
-      placeholder: "https://example.com",
-      defaultValue: prev ?? "https://",
-      confirmLabel: "Apply",
-      onSubmit: (url) => {
-        if (url.trim() === "") c().unsetLink().run();
-        else c().setLink({ href: url.trim() }).run();
-      },
-    });
-  };
+  const setLink = () => useStore.getState().setLinkDialogOpen(true);
 
   const addComment = () => {
     const sel = editor.state.selection;

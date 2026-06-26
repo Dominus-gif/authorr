@@ -303,6 +303,9 @@ interface StoreState {
    *  Personal vs Team by their `collabMode`. */
   sidebarWorkspace: "personal" | "team";
   setSidebarWorkspace: (w: "personal" | "team") => void;
+  /** Link editor dialog (custom display text + URL). */
+  linkDialogOpen: boolean;
+  setLinkDialogOpen: (open: boolean) => void;
   // Cloud document sync (Supabase). Ephemeral — not persisted.
   cloudStatus: "idle" | "syncing" | "synced" | "error";
   cloudError: string | null;
@@ -573,6 +576,7 @@ export const useStore = create<StoreState>()(
       pageMargin: 0,
       timerOpen: false,
       sidebarWorkspace: "personal",
+      linkDialogOpen: false,
       cloudStatus: "idle",
       cloudError: null,
       lastCloudSyncAt: null,
@@ -1067,6 +1071,7 @@ export const useStore = create<StoreState>()(
       setGrid: (patch) => set((s) => ({ grid: { ...s.grid, ...patch } })),
       setTimerOpen: (timerOpen) => set({ timerOpen }),
       setSidebarWorkspace: (sidebarWorkspace) => set({ sidebarWorkspace }),
+      setLinkDialogOpen: (linkDialogOpen) => set({ linkDialogOpen }),
       setCloudStatus: (cloudStatus, cloudError = null) =>
         set({ cloudStatus, cloudError, lastCloudSyncAt: cloudStatus === "synced" ? Date.now() : get().lastCloudSyncAt }),
       mergeCloudDocs: (nodes) => set((s) => {

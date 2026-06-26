@@ -2,11 +2,14 @@
 
 import { useRef, useState, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { Pen, Pencil, Eraser, Undo2, Trash2, X, GripVertical } from "lucide-react";
+import { Pen, Pencil, Eraser, Undo2, Trash2, X, GripVertical, Square, Circle, Triangle, ArrowUpRight, Minus } from "lucide-react";
 import { useStore } from "@/lib/store";
 import type { PageStroke } from "@/lib/types";
 
-type Tool = "pen" | "pencil" | "eraser";
+type Shape = "rect" | "circle" | "triangle" | "arrow" | "line";
+type Tool = "pen" | "pencil" | "eraser" | Shape;
+const SHAPE_TOOLS: Shape[] = ["rect", "circle", "triangle", "arrow", "line"];
+const isShapeTool = (t: Tool): t is Shape => (SHAPE_TOOLS as string[]).includes(t);
 
 const COLORS = ["#ef9f27", "#e24b4a", "#5dca8f", "#5b9ddd", "#7f77dd", "#d4537e", "#16161a", "#f4f4f5"];
 const WIDTHS = [2, 4, 7];
@@ -25,6 +28,28 @@ function toPath(points: [number, number][]): string {
 
 function Stroke({ s, scaleX }: { s: PageStroke; scaleX: number }) {
   const pts: [number, number][] = scaleX === 1 ? s.points : s.points.map(([x, y]) => [x * scaleX, y]);
+  // Geometric shape — drawn from points[0] → points[last].
+  if (s.shape && pts.length >= 2) {
+    const [x1, y1] = pts[0];
+    const [x2, y2] = pts[pts.length - 1];
+    const x = Math.min(x1, x2), y = Math.min(y1, y2), w = Math.abs(x2 - x1), h = Math.abs(y2 - y1);
+    const common = { fill: "none", stroke: s.color, strokeWidth: s.width, strokeLinejoin: "round" as const, strokeLinecap: "round" as const };
+    if (s.shape === "rect") return <rect x={x} y={y} width={w} height={h} rx={Math.min(6, w / 8, h / 8)} {...common} />;
+    if (s.shape === "circle") return <ellipse cx={x + w / 2} cy={y + h / 2} rx={w / 2} ry={h / 2} {...common} />;
+    if (s.shape === "triangle") return <polygon points={`${x + w / 2},${y} ${x},${y + h} ${x + w},${y + h}`} {...common} />;
+    if (s.shape === "line") return <line x1={x1} y1={y1} x2={x2} y2={y2} {...common} />;
+    // arrow = line + arrowhead at the end
+    const ang = Math.atan2(y2 - y1, x2 - x1);
+    const ah = 8 + s.width * 2;
+    const a1x = x2 - ah * Math.cos(ang - Math.PI / 7), a1y = y2 - ah * Math.sin(ang - Math.PI / 7);
+    const a2x = x2 - ah * Math.cos(ang + Math.PI / 7), a2y = y2 - ah * Math.sin(ang + Math.PI / 7);
+    return (
+      <g>
+        <line x1={x1} y1={y1} x2={x2} y2={y2} {...common} />
+        <polyline points={`${a1x},${a1y} ${x2},${y2} ${a2x},${a2y}`} {...common} />
+      </g>
+    );
+  }
   const d = toPath(pts);
   if (s.tool === "pencil") {
     return (
@@ -115,7 +140,9 @@ export function DoodleOverlay() {
     drawing.current = true;
     const p = toContent(e);
     if (tool === "eraser") { eraseAt(p); return; }
-    const s: PageStroke = { tool, color, width, points: [p], cw: scroller?.clientWidth || undefined };
+    const s: PageStroke = isShapeTool(tool)
+      ? { tool: "pen", color, width, points: [p, p], cw: scroller?.clientWidth || undefined, shape: tool }
+      : { tool: tool as "pen" | "pencil", color, width, points: [p], cw: scroller?.clientWidth || undefined };
     liveRef.current = s;
     setLive(s);
   };
@@ -124,7 +151,10 @@ export function DoodleOverlay() {
     const p = toContent(e);
     if (tool === "eraser") { eraseAt(p); return; }
     if (!liveRef.current) return;
-    const s = { ...liveRef.current, points: [...liveRef.current.points, p] };
+    // Shapes track only start→current; freehand appends.
+    const s = isShapeTool(tool)
+      ? { ...liveRef.current, points: [liveRef.current.points[0], p] as [number, number][] }
+      : { ...liveRef.current, points: [...liveRef.current.points, p] };
     liveRef.current = s;
     setLive(s);
   };
@@ -219,6 +249,13 @@ export function DoodleOverlay() {
           <ToolBtn icon={Pen} label="Pen (ink)" active={tool === "pen"} onClick={() => setTool("pen")} />
           <ToolBtn icon={Pencil} label="Pencil (sketch)" active={tool === "pencil"} onClick={() => setTool("pencil")} />
           <ToolBtn icon={Eraser} label="Eraser" active={tool === "eraser"} onClick={() => setTool("eraser")} />
+          <span style={{ width: 1, height: 22, background: "var(--border)" }} />
+          {/* Shapes — drag to size; use the palette to color them. */}
+          <ToolBtn icon={Square} label="Rectangle" active={tool === "rect"} onClick={() => setTool("rect")} />
+          <ToolBtn icon={Circle} label="Circle / ellipse" active={tool === "circle"} onClick={() => setTool("circle")} />
+          <ToolBtn icon={Triangle} label="Triangle" active={tool === "triangle"} onClick={() => setTool("triangle")} />
+          <ToolBtn icon={ArrowUpRight} label="Arrow" active={tool === "arrow"} onClick={() => setTool("arrow")} />
+          <ToolBtn icon={Minus} label="Line" active={tool === "line"} onClick={() => setTool("line")} />
           <span style={{ width: 1, height: 22, background: "var(--border)" }} />
           <div style={{ display: "flex", gap: 5 }}>
             {COLORS.map((c) => (

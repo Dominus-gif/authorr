@@ -516,8 +516,14 @@ body {
 }
 [data-infinite-canvas] .ProseMirror {
   min-height: calc(100vh - 200px);
-  padding: 12px 18px;
+  padding: 24px 28px;
+  /* Keep the writing column readable even though the canvas is a wide pannable
+     surface — text wraps in a column; doodles/shapes can go anywhere on the canvas. */
+  max-width: 820px;
 }
+/* The infinite canvas is a large free surface: middle-mouse drag pans it,
+   Ctrl/⌘+wheel zooms. */
+[data-doodle-scope][data-infinite-canvas] { cursor: default; }
 
 /* Page borders — a paper-page look around the writing column so the page is
    visually distinct from the working canvas. */

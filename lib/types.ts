@@ -144,8 +144,11 @@ export interface PageStroke {
   tool: "pen" | "pencil";
   color: string;
   width: number;
+  /** Freehand path points; for a shape, just [start, end]. */
   points: [number, number][];
   cw?: number;
+  /** Geometric shape drawn from points[0]→points[1]; absent = freehand stroke. */
+  shape?: "rect" | "circle" | "triangle" | "arrow" | "line";
 }
 
 export type ShareVisibility = "public" | "private" | "onetime";
