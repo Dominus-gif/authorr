@@ -235,7 +235,7 @@ export default function Home() {
           <Reveal tag="span" immediate y={14} style={{ display: "inline-flex", alignItems: "center", gap: 8, borderRadius: "var(--radius-pill)", border: "1px solid var(--border)", background: "var(--surface-card)", padding: "6px 14px", fontSize: 12.5, fontWeight: 500, color: "var(--text-body)" }}>
             <Sparkles size={13} color="var(--accent)" /> AI editing · version history · zero distractions
           </Reveal>
-          <Reveal tag="h1" immediate delay={0.08} style={{ fontFamily: "var(--font-display)", margin: "24px 0 0", fontSize: 62, fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.03em", color: "var(--ink-900)", textWrap: "balance" }}>
+          <Reveal tag="h1" immediate delay={0.08} style={{ fontFamily: "var(--font-display)", margin: "24px 0 0", fontSize: "clamp(2.3rem, 9vw, 62px)", fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.03em", color: "var(--ink-900)", textWrap: "balance" }}>
             Write better, faster,<br />
             <span style={{ position: "relative", display: "inline-block", whiteSpace: "nowrap" }}>
               <span aria-hidden style={{ position: "absolute", left: "-0.16em", right: "-0.16em", top: "0.1em", bottom: "0.12em", background: "var(--marker)", borderRadius: "62% 38% 56% 44% / 56% 52% 48% 44%", transform: "rotate(-1.4deg)", zIndex: 0 }} />
@@ -271,7 +271,7 @@ export default function Home() {
       {/* Bento features */}
       <section id="features" style={{ margin: "0 auto", maxWidth: MAX, padding: "104px 20px" }}>
         <SectionHead title="Everything you need to write well" sub="A focused canvas on the outside, a serious editing system underneath." />
-        <div style={{ marginTop: 48, display: "grid", gap: 16, gridTemplateColumns: "repeat(3, 1fr)" }}>
+        <div style={{ marginTop: 48, display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
           <Reveal style={{ ...cardBase, gridColumn: "span 2", background: "var(--paper-50)", padding: 36, display: "flex", flexDirection: "column" }}>
             <FeatureIcon icon={Wand2} accent />
             <h3 style={title3()}>An editor that reads along with you</h3>
@@ -316,7 +316,7 @@ export default function Home() {
       <section id="how" style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", background: "var(--glow-bg), var(--paper-50)" }}>
         <div style={{ margin: "0 auto", maxWidth: MAX, padding: "104px 20px" }}>
           <SectionHead eyebrow="How it works" title="From blank page to published" sub="Three steps. No setup, no learning curve." />
-          <div style={{ marginTop: 48, display: "grid", gap: 16, gridTemplateColumns: "repeat(3, 1fr)" }}>
+          <div style={{ marginTop: 48, display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
             {STEPS.map(([n, Ic, t, d], i) => (
               <Reveal key={n} y={22} delay={i * 0.1} style={{ ...cardBase, padding: 32 }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -334,7 +334,7 @@ export default function Home() {
       {/* Testimonials */}
       <section style={{ margin: "0 auto", maxWidth: MAX, padding: "104px 20px" }}>
         <SectionHead title="Writers in flow" sub="A few words from the kinds of people Authorr is built for." />
-        <div style={{ marginTop: 48, display: "grid", gap: 16, gridTemplateColumns: "repeat(3, 1fr)" }}>
+        <div style={{ marginTop: 48, display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
           {TESTIMONIALS.map(([q, n, r, c], i) => (
             <Reveal key={n} tag="figure" y={22} delay={i * 0.1} style={{ ...cardBase, margin: 0, padding: 32, display: "flex", flexDirection: "column" }}>
               <span style={{ display: "inline-flex" }} aria-hidden>{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={14} style={{ fill: "#e8a33d", color: "#e8a33d" }} />)}</span>

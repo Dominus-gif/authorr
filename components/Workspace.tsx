@@ -312,7 +312,7 @@ export function Workspace() {
 
   return (
     <EditorContext.Provider value={editor}>
-    <div data-script-mode={workMode === "scriptwriting" ? "" : undefined} data-scene-numbers={workMode === "scriptwriting" && sceneNumbers ? "" : undefined} style={{ height: "100vh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+    <div className="app-shell" data-script-mode={workMode === "scriptwriting" ? "" : undefined} data-scene-numbers={workMode === "scriptwriting" && sceneNumbers ? "" : undefined} style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}>
       {/* Top bar (hidden in zen) */}
       {!zen && <TopBar />}
 

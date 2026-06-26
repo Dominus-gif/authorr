@@ -1053,11 +1053,29 @@ html { scroll-behavior: smooth; }
   html { scroll-behavior: auto; }
 }
 
+/* App shell: full viewport height, using the dynamic viewport unit on mobile so
+   the browser's address bar doesn't cut off the bottom (the classic 100vh bug). */
+.app-shell { height: 100vh; height: 100dvh; }
+
+/* Marketing page: never allow horizontal scroll (decorative bits can bleed). */
+.authorr-ds.grid-bg { overflow-x: clip; }
+
 /* ───────── Mobile / phone optimization ───────── */
+@media (max-width: 640px) {
+  /* Marketing: tighten section padding + the floating nav on phones. */
+  .authorr-ds.grid-bg section { padding-left: 16px !important; padding-right: 16px !important; }
+}
 @media (max-width: 768px) {
   /* Top bar scrolls horizontally instead of overflowing its many controls. */
   .ef-topbar { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
   .ef-topbar::-webkit-scrollbar { display: none; }
+  /* Side panels overlay the editor (drawers) instead of squeezing it. */
+  .app-sidebar, .app-aipanel {
+    position: fixed !important; top: 52px; bottom: 0; z-index: 60;
+    max-width: 86vw; box-shadow: 0 0 50px rgba(0,0,0,0.45);
+  }
+  .app-sidebar { left: 0; }
+  .app-aipanel { right: 0; }
   /* Tighter writing-column gutters so text isn't cramped on a narrow screen. */
   [data-editor-scroll] { padding-left: 12px !important; padding-right: 12px !important; }
   [data-doodle-scope] { max-width: 100% !important; }

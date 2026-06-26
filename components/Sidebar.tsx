@@ -284,6 +284,7 @@ export function Sidebar() {
 
   return (
     <aside
+      className="app-sidebar"
       style={{
         width: sidebarWidth,
         flexShrink: 0,

@@ -186,6 +186,7 @@ export function AIPanel({ text, editor, casual }: { text: string; editor: Editor
 
   return (
     <aside
+      className="app-aipanel"
       style={{
         width: aiPanelWidth,
         flexShrink: 0,
