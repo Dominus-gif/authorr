@@ -1057,6 +1057,21 @@ html { scroll-behavior: smooth; }
    the browser's address bar doesn't cut off the bottom (the classic 100vh bug). */
 .app-shell { height: 100vh; height: 100dvh; }
 
+/* Marketing reveal — CSS fade+rise (JS-free, so content can never stay hidden).
+   Duration + delay come inline; this sets the name/easing/fill-mode. */
+.ef-reveal {
+  animation-name: ef-reveal-up;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+}
+@keyframes ef-reveal-up {
+  from { opacity: 0; transform: translateY(var(--rv-y, 18px)); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ef-reveal { animation: none !important; opacity: 1 !important; transform: none !important; }
+}
+
 /* Marketing page: never allow horizontal scroll (decorative bits can bleed). */
 .authorr-ds.grid-bg { overflow-x: clip; }
 
