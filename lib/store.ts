@@ -481,6 +481,8 @@ interface StoreState {
   setScriptPanelOpen: (open: boolean) => void;
   setBookmark: (docId: string, ratio: number) => void;
   toggleCloud: (provider: string) => void;
+  /** Simulated import of a folder from a connected cloud provider. */
+  importCloudFolder: (providerId: string, label: string, folderName: string) => void;
   setAutosave: (enabled: boolean, minutes?: number) => void;
   setShare: (docId: string, visibility: ShareVisibility) => ShareConfig;
   setShareExpiry: (docId: string, ms: number | null) => void;
@@ -1114,11 +1116,37 @@ export const useStore = create<StoreState>()(
       setScriptPanelOpen: (scriptPanelOpen) => set({ scriptPanelOpen }),
       setBookmark: (docId, ratio) => set((s) => ({ bookmarks: { ...s.bookmarks, [docId]: ratio } })),
       toggleCloud: (provider) =>
-        set((s) => ({
-          connectedClouds: s.connectedClouds.includes(provider)
-            ? s.connectedClouds.filter((p) => p !== provider)
-            : [...s.connectedClouds, provider],
-        })),
+        set((s) => {
+          const isOn = s.connectedClouds.includes(provider);
+          return {
+            connectedClouds: isOn
+              ? s.connectedClouds.filter((p) => p !== provider)
+              : [...s.connectedClouds, provider],
+            // Disconnecting removes that provider's imported folders.
+            tree: isOn ? s.tree.filter((n) => n.cloudProvider !== provider) : s.tree,
+          };
+        }),
+      importCloudFolder: (providerId, label, folderName) =>
+        set((s) => {
+          const now = Date.now();
+          const folder: TreeNode = {
+            id: "f-" + uid(),
+            type: "folder",
+            name: folderName,
+            expanded: true,
+            collabMode: "personal",
+            cloudProvider: providerId,
+            children: [
+              { id: "d-" + uid(), type: "doc", name: "Welcome.ef", status: "draft", content: `<h1>${folderName}</h1><p>Imported from ${label}.</p>`, createdAt: now, updatedAt: now },
+              { id: "d-" + uid(), type: "doc", name: "Shared notes", status: "draft", content: "<h1>Shared notes</h1><p></p>", createdAt: now, updatedAt: now },
+            ],
+          };
+          return {
+            tree: [...s.tree, folder],
+            sidebarWorkspace: "personal",
+            activityLog: [{ id: "a-" + uid(), action: "create" as const, nodeType: "folder" as const, name: `${folderName} (${label})`, userId: s.currentUserId, userName: s.users.find((u) => u.id === s.currentUserId)?.name ?? "You", at: now }, ...s.activityLog].slice(0, 200),
+          };
+        }),
       setAutosave: (autosaveEnabled, minutes) =>
         set((s) => ({ autosaveEnabled, autosaveMinutes: minutes ?? s.autosaveMinutes })),
       setShare: (docId, visibility) => {

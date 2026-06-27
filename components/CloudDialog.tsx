@@ -22,13 +22,29 @@ export function CloudDialog() {
   const autosaveMinutes = useStore((s) => s.autosaveMinutes);
   const setAutosave = useStore((s) => s.setAutosave);
   const showToast = useStore((s) => s.showToast);
+  const openPrompt = useStore((s) => s.openPrompt);
+  const importCloudFolder = useStore((s) => s.importCloudFolder);
 
   if (!open) return null;
 
   const connect = (id: string, label: string) => {
     const wasConnected = connected.includes(id);
     toggleCloud(id);
-    showToast(wasConnected ? `Disconnected from ${label}.` : `Connected to ${label} — updates will sync here.`);
+    if (wasConnected) { showToast(`Disconnected from ${label}.`); return; }
+    showToast(`Connected to ${label}.`);
+    // Ask which folder to import before pulling anything in.
+    openPrompt({
+      title: `Import from ${label}`,
+      message: `Pick a folder to import from your ${label}. Its files appear under Personal · ${label}.`,
+      label: "Folder name",
+      placeholder: `${label} Documents`,
+      defaultValue: `${label} Documents`,
+      confirmLabel: "Import folder",
+      onSubmit: (name) => {
+        const n = name.trim();
+        if (n) { importCloudFolder(id, label, n); showToast(`Imported "${n}" from ${label}.`); }
+      },
+    });
   };
 
   return (

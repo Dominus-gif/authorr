@@ -12,6 +12,7 @@ import {
   PenLine,
   Palette,
   Lock,
+  Cloud,
 } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { STATUS_META, NODE_COLORS, type TreeNode } from "@/lib/types";
@@ -162,6 +163,11 @@ function Row({ node, depth }: { node: TreeNode; depth: number }) {
         )}
 
         <StatusDot node={node} />
+        {node.cloudProvider && (
+          <span title="Connected cloud folder" style={{ display: "inline-flex", alignItems: "center", gap: 3, flexShrink: 0, fontSize: 9, fontWeight: 600, color: "var(--accent)", background: "var(--accent-soft)", borderRadius: 999, padding: "1px 6px" }}>
+            <Cloud size={10} /> Connected
+          </span>
+        )}
 
         <span
           className="opacity-0 group-hover:opacity-100"

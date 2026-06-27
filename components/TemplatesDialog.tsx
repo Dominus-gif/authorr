@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { LayoutTemplate, X, Search, Star } from "lucide-react";
+import { LayoutTemplate, X, Search, Star, FileText } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { TEMPLATES, TEMPLATE_CATEGORIES } from "@/lib/templates";
 
@@ -83,35 +83,26 @@ export function TemplatesDialog() {
                   onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); createFromTemplate(tpl.name, tpl.html); } }}
                   title={`Create a new "${tpl.name}" document`}
                   className="tpl-card"
-                  style={{ textAlign: "left", display: "flex", flexDirection: "column", borderRadius: 12, overflow: "hidden", border: "1px solid var(--border-strong)", background: "var(--bg-elev-2)", cursor: "pointer" }}
+                  style={{ textAlign: "left", display: "flex", flexDirection: "column", borderRadius: 12, overflow: "hidden", border: "1px solid var(--border-strong)", background: "var(--bg-elev)", cursor: "pointer", minHeight: 116 }}
                 >
-                  {/* Clean document-mockup preview (crisp at any size; renders the
-                      accent + a faux page layout instead of fragile scaled HTML). */}
-                  <div style={{ position: "relative", height: 132, overflow: "hidden", background: "#ffffff", borderBottom: "1px solid var(--border)" }}>
-                    <div style={{ position: "absolute", inset: 0, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 7 }}>
-                      <div style={{ width: "58%", height: 9, borderRadius: 3, background: tpl.accent }} />
-                      <div style={{ width: "38%", height: 5, borderRadius: 3, background: "#d9d6d4", marginBottom: 4 }} />
-                      {[92, 100, 84, 96, 70].map((w, i) => (
-                        <div key={i} style={{ width: `${w}%`, height: 4, borderRadius: 3, background: "#e7e4e2" }} />
-                      ))}
-                    </div>
-                    {/* accent ribbon */}
-                    <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 4, background: tpl.accent }} />
+                  {/* Accent header — title on a tinted band (crisp, theme-safe, no blur). */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "13px 13px", borderBottom: "1px solid var(--border)", background: `color-mix(in srgb, ${tpl.accent} 12%, var(--bg-elev))` }}>
+                    <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 34, height: 34, borderRadius: 9, flexShrink: 0, background: tpl.accent, color: "#fff" }}>
+                      <FileText size={17} />
+                    </span>
+                    <span style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text)", flex: 1, minWidth: 0, lineHeight: 1.25 }}>{tpl.name}</span>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); toggleFavorite(tpl.id); }}
+                      aria-label={fav ? "Remove from favorites" : "Add to favorites"}
+                      title={fav ? "Remove from favorites" : "Add to favorites"}
+                      style={{ display: "flex", padding: 2, color: fav ? "#e8a33d" : "var(--text-tertiary)", flexShrink: 0 }}
+                    >
+                      <Star size={15} style={{ fill: fav ? "#e8a33d" : "none" }} />
+                    </button>
                   </div>
-                  <div style={{ padding: "10px 12px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text)", flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{tpl.name}</div>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); toggleFavorite(tpl.id); }}
-                        aria-label={fav ? "Remove from favorites" : "Add to favorites"}
-                        title={fav ? "Remove from favorites" : "Add to favorites"}
-                        style={{ display: "flex", padding: 2, color: fav ? "#e8a33d" : "var(--text-tertiary)", flexShrink: 0 }}
-                      >
-                        <Star size={15} style={{ fill: fav ? "#e8a33d" : "none" }} />
-                      </button>
-                    </div>
-                    <div style={{ fontSize: 11, color: "var(--text-tertiary)", lineHeight: 1.4, height: 30, overflow: "hidden", marginTop: 2 }}>{tpl.blurb}</div>
-                    <div style={{ marginTop: 6, fontSize: 10, fontWeight: 600, color: tpl.accent, textTransform: "uppercase", letterSpacing: 0.4 }}>{tpl.category}</div>
+                  <div style={{ padding: "10px 13px", display: "flex", flexDirection: "column", flex: 1 }}>
+                    <div style={{ fontSize: 11.5, color: "var(--text-tertiary)", lineHeight: 1.45, flex: 1, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{tpl.blurb}</div>
+                    <div style={{ marginTop: 8, fontSize: 10, fontWeight: 700, color: tpl.accent, textTransform: "uppercase", letterSpacing: 0.5 }}>{tpl.category}</div>
                   </div>
                 </div>
               );

@@ -209,6 +209,8 @@ export interface TreeNode {
   passcodeHash?: string;
   /** Collaboration mode for this doc — personal drafts vs team workspace */
   collabMode?: "personal" | "team";
+  /** Set on folders/docs imported from a connected cloud provider (id, e.g. "gdrive"). */
+  cloudProvider?: string;
   // Document metadata
   createdAt?: number;
   creatorId?: string;
