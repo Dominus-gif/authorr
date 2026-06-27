@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { UserCircle2, LayoutTemplate, Trash2, Archive, Cloud, ChevronDown } from "lucide-react";
-import { useUser } from "@clerk/nextjs";
+import { UserCircle2, LayoutTemplate, Trash2, Archive, Cloud, ChevronDown, LogOut } from "lucide-react";
+import { useUser, useClerk } from "@clerk/nextjs";
 import { useStore } from "@/lib/store";
 
 const clerkEnabled = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
@@ -99,13 +99,30 @@ export function SidebarFooter() {
           onMouseDown={(e) => e.stopPropagation()}
           style={{ position: "fixed", left: pos.left, bottom: pos.bottom, width: Math.max(220, pos.width), zIndex: 1000, background: "var(--bg-elev-2)", border: "1px solid var(--border-strong)", borderRadius: 12, padding: 6, boxShadow: "0 16px 40px rgba(0,0,0,0.34)" }}
         >
-          {item(<UserCircle2 size={16} />, "Account · sign in / up", () => setAccountOpen(true))}
+          {item(<UserCircle2 size={16} />, "Account & settings", () => setAccountOpen(true))}
           {item(<Archive size={16} />, "Archive", () => setArchiveOpen(true))}
           {item(<Cloud size={16} />, "Cloud storage", () => setCloudDialogOpen(true), connectedClouds.length || "")}
+          {clerkEnabled && <SignOutItem onDone={() => setMenuOpen(false)} />}
         </div>,
         document.body,
       )}
     </div>
+  );
+}
+
+/** Sign-out menu item — ends the Clerk session and returns to the sign-up page. */
+function SignOutItem({ onDone }: { onDone: () => void }) {
+  const { signOut } = useClerk();
+  return (
+    <button
+      onClick={() => { onDone(); signOut({ redirectUrl: "/sign-up" }); }}
+      style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", padding: "9px 11px", borderRadius: 8, fontSize: 13, color: "var(--danger)", textAlign: "left" }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg-elev-3)")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+    >
+      <LogOut size={16} style={{ color: "var(--danger)" }} />
+      <span style={{ flex: 1 }}>Sign out</span>
+    </button>
   );
 }
 

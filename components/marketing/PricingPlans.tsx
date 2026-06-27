@@ -123,7 +123,7 @@ export function PricingPlans() {
   return (
     <>
       <BillingToggle yearly={yearly} setYearly={setYearly} />
-      <div style={{ margin: "40px auto 0", maxWidth: 980, display: "grid", gap: 20, gridTemplateColumns: "repeat(3, 1fr)", alignItems: "stretch" }}>
+      <div style={{ margin: "40px auto 0", maxWidth: 980, display: "grid", gap: 20, gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", alignItems: "stretch" }}>
         {PLANS.map((p, i) => (
           <PlanCard key={p.name} plan={p} yearly={yearly} delay={i * 0.08} />
         ))}

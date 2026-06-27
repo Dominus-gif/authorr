@@ -140,7 +140,7 @@ function Mockup() {
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--status-published)" }} /> Saved
         </span>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 220px" }}>
+      <div className="mockup-grid" style={{ display: "grid", gridTemplateColumns: "1fr 220px" }}>
         <div style={{ padding: 32 }}>
           <div style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 700, color: "var(--ink-900)", letterSpacing: "-0.02em" }}>On finishing things</div>
           <p style={{ fontFamily: "var(--font-body)", marginTop: 16, marginBottom: 0, fontSize: 15.5, lineHeight: 1.75, color: "var(--text-body)" }}>
@@ -154,7 +154,7 @@ function Mockup() {
             <span>318 words</span><span>·</span><span>2 min read</span>
           </div>
         </div>
-        <div style={{ borderLeft: "1px solid var(--border)", background: "var(--paper-50)", padding: 14 }}>
+        <div className="mockup-aside" style={{ borderLeft: "1px solid var(--border)", background: "var(--paper-50)", padding: 14 }}>
           <div style={{ marginBottom: 12, display: "flex", alignItems: "center", gap: 7, fontSize: 12.5, fontWeight: 600, color: "var(--accent)", fontFamily: "var(--font-ui)" }}>
             <Sparkles size={13} /> AI suite
           </div>

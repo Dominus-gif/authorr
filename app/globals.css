@@ -1079,7 +1079,13 @@ html { scroll-behavior: smooth; }
 @media (max-width: 640px) {
   /* Marketing: tighten section padding + the floating nav on phones. */
   .authorr-ds.grid-bg section { padding-left: 16px !important; padding-right: 16px !important; }
+  /* Hero mockup: single editor column (hide the AI-panel pane) so it isn't cramped. */
+  .mockup-grid { grid-template-columns: 1fr !important; }
+  .mockup-aside { display: none !important; }
 }
+
+/* Template cards never take the glassmorphism backdrop blur (it can wash them out). */
+.tpl-card, .tpl-thumb { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
 @media (max-width: 768px) {
   /* Top bar scrolls horizontally instead of overflowing its many controls. */
   .ef-topbar { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }

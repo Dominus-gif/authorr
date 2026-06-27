@@ -175,5 +175,17 @@ export default function RootLayout({
   );
 
   if (!clerkEnabled) return tree;
-  return <ClerkProvider appearance={clerkAppearance}>{tree}</ClerkProvider>;
+  // Route auth to our custom in-app pages (not Clerk's hosted Account Portal),
+  // so users see the branded AuthShell instead of accounts.dev.
+  return (
+    <ClerkProvider
+      appearance={clerkAppearance}
+      signInUrl="/sign-in"
+      signUpUrl="/sign-up"
+      signInFallbackRedirectUrl="/app"
+      signUpFallbackRedirectUrl="/app"
+    >
+      {tree}
+    </ClerkProvider>
+  );
 }
